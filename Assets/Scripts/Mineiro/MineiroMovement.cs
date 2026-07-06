@@ -7,6 +7,7 @@ public class MineiroMovement : MonoBehaviour
 {
 
     [SerializeField] private Tilemap mapaDoOuro;
+    [SerializeField] private Tilemap mapaDoOuroFalso;
 
     private NavMeshAgent agent;
 
@@ -17,16 +18,17 @@ public class MineiroMovement : MonoBehaviour
         agent.updateRotation = false;
         agent.updateUpAxis = false;
 
-        agent.SetDestination(EncontrarOuroMaisProximoPorCaminho());
-        
     }
-
     // Update is called once per frame
     void Update()
     {
         //agent.SetDestination(target.position);
     }
 
+    public void CalcularDestino()
+    {
+        agent.SetDestination(EncontrarOuroMaisProximoPorCaminho());
+    }
 
     public Vector3 EncontrarOuroMaisProximoPorCaminho()
     {
@@ -61,8 +63,32 @@ public class MineiroMovement : MonoBehaviour
             }
         }
 
+        foreach (Vector3Int posicaoGrid in mapaDoOuroFalso.cellBounds.allPositionsWithin)
+        {
+            if (mapaDoOuroFalso.HasTile(posicaoGrid))
+            {
+                Vector3 posicaoMundo = mapaDoOuroFalso.GetCellCenterWorld(posicaoGrid);
+
+                if (NavMesh.CalculatePath(posicaoMineiro, posicaoMundo, NavMesh.AllAreas, caminhoSimulado))
+                {
+                    if (caminhoSimulado.status == NavMeshPathStatus.PathComplete)
+                    {
+                        float comprimentoDoCaminho = CalcularComprimentoDoCaminho(caminhoSimulado);
+
+                        if (comprimentoDoCaminho < menorCaminhoReal)
+                        {
+                            menorCaminhoReal = comprimentoDoCaminho;
+                            posicaoMaisProxima = posicaoMundo;
+                            achouOuro = true;
+                        }
+                    }
+                }
+            }
+        }
+
         if (achouOuro) return posicaoMaisProxima;
-        
+        Debug.Log("Nn achei");
+
         return posicaoMineiro; // Fica parado se não houver caminho alcançável
     }
 
