@@ -4954,7 +4954,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 125741472c99e71408bde9add7e9cf18, type: 2}
     - target: {fileID: 4427327256756113741, guid: 7530040e1eb7bad4db8834a72349fa20, type: 3}
       propertyPath: obstaculos.Array.data[0].quantidade
-      value: 3
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4427327256756113741, guid: 7530040e1eb7bad4db8834a72349fa20, type: 3}
       propertyPath: obstaculos.Array.data[1].quantidade
@@ -4968,21 +4968,65 @@ PrefabInstance:
       propertyPath: nav
       value: 
       objectReference: {fileID: 454045769}
+    - target: {fileID: 5738586473723371699, guid: 7530040e1eb7bad4db8834a72349fa20, type: 3}
+      propertyPath: mineiro
+      value: 
+      objectReference: {fileID: 1072263111}
+    - target: {fileID: 5970685766108223809, guid: 7530040e1eb7bad4db8834a72349fa20, type: 3}
+      propertyPath: m_ActionEvents.Array.size
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5970685766108223809, guid: 7530040e1eb7bad4db8834a72349fa20, type: 3}
+      propertyPath: m_ActionEvents.Array.data[19].m_ActionId
+      value: 6639092e-1fd8-4e44-b2a8-e4082298bf5f
+      objectReference: {fileID: 0}
+    - target: {fileID: 5970685766108223809, guid: 7530040e1eb7bad4db8834a72349fa20, type: 3}
+      propertyPath: m_ActionEvents.Array.data[19].m_ActionName
+      value: 'Player/Posicionar[/Mouse/position,/Touchscreen/position]'
+      objectReference: {fileID: 0}
     - target: {fileID: 5970685766108223809, guid: 7530040e1eb7bad4db8834a72349fa20, type: 3}
       propertyPath: m_ActionEvents.Array.data[13].m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5970685766108223809, guid: 7530040e1eb7bad4db8834a72349fa20, type: 3}
+      propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5970685766108223809, guid: 7530040e1eb7bad4db8834a72349fa20, type: 3}
       propertyPath: m_ActionEvents.Array.data[13].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5970685766108223809, guid: 7530040e1eb7bad4db8834a72349fa20, type: 3}
+      propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5970685766108223809, guid: 7530040e1eb7bad4db8834a72349fa20, type: 3}
       propertyPath: m_ActionEvents.Array.data[13].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 2142372153}
     - target: {fileID: 5970685766108223809, guid: 7530040e1eb7bad4db8834a72349fa20, type: 3}
+      propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2142372153}
+    - target: {fileID: 5970685766108223809, guid: 7530040e1eb7bad4db8834a72349fa20, type: 3}
       propertyPath: m_ActionEvents.Array.data[13].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5970685766108223809, guid: 7530040e1eb7bad4db8834a72349fa20, type: 3}
+      propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5970685766108223809, guid: 7530040e1eb7bad4db8834a72349fa20, type: 3}
+      propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnPosicionar
+      objectReference: {fileID: 0}
+    - target: {fileID: 5970685766108223809, guid: 7530040e1eb7bad4db8834a72349fa20, type: 3}
+      propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SistemaDeConstrucao, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5970685766108223809, guid: 7530040e1eb7bad4db8834a72349fa20, type: 3}
+      propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 7772916815337438292, guid: 7530040e1eb7bad4db8834a72349fa20, type: 3}
       propertyPath: m_AnchorMax.y
