@@ -9,10 +9,13 @@ public class FuncoesCena : MonoBehaviour
     [SerializeField]private NavMeshSurface nav;
     [SerializeField]private MineiroMovement mineiro;
 
+    private SistemaDeConstrucao sistemaDeConstrucao;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         Time.timeScale = 0;
+        sistemaDeConstrucao = GetComponent<SistemaDeConstrucao>();
     }
 
     public void PlayTheGame()
@@ -26,6 +29,7 @@ public class FuncoesCena : MonoBehaviour
         // 1. Volta o tempo ao normal para a física voltar a funcionar
         timeUnfreeze();
 
+        sistemaDeConstrucao.DesativarMapas();
         // 2. Pega o componente do agente no mineiro e DESLIGA ele
         NavMeshAgent agenteDoMineiro = mineiro.GetComponent<NavMeshAgent>();
         if (agenteDoMineiro != null) agenteDoMineiro.enabled = false;
