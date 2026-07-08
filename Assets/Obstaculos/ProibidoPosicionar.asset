@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bd80eb17f3145743b211897cd08d38d, type: 3}
+  m_Name: ProibidoPosicionar
+  m_EditorClassIdentifier: Assembly-CSharp::DadosDoObstaculo
+  nomeDoObstaculo: Proibido Posicionar
+  icone: {fileID: -783232345, guid: 06ce4cea15f3d4148a8d837d3b66760b, type: 3}
+  tipoDeMapaAlvo: 4
+  tileAsset: {fileID: 11400000, guid: 73071ff72400000448fda9e3ed271500, type: 2}

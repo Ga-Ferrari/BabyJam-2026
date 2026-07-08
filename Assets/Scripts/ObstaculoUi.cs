@@ -3,38 +3,33 @@ using UnityEngine.UI;
 using UnityEngine.Tilemaps;
 using TMPro;
 
-public enum TipoTilemap
-{
-    Fundo,
-    Paredes,
-    Ouro,
-    OuroFalso
-}
 
+[RequireComponent(typeof(CanvasGroup))]
 public class ObstaculoUi : MonoBehaviour
 {
     public obstaculoslevel obstaculoACriar; 
+    private CanvasGroup canvasGroup;
     TextMeshProUGUI textoQuantidade;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    
     void Start()
     {
-        // 2. Muda a imagem do botão para o ícone do obstáculo
-            Image imagemDoBotao = GetComponent<Image>();
-            imagemDoBotao.sprite = obstaculoACriar.obstaculo.icone;
+        Image imagemDoBotao = GetComponent<Image>();
+        imagemDoBotao.sprite = obstaculoACriar.obstaculo.icone;
 
-            // 3. Pega o Texto filho do botão e muda para a quantidade
-            textoQuantidade = GetComponentInChildren<TextMeshProUGUI>();
-            textoQuantidade.text = "x" + obstaculoACriar.quantidade;
+        textoQuantidade = GetComponentInChildren<TextMeshProUGUI>();
+        textoQuantidade.text = "x" + obstaculoACriar.quantidade;
+
+        canvasGroup = GetComponent<CanvasGroup>();
 
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (obstaculoACriar.quantidade <= 0)
         {
-            enabled = false;
+            EsconderBotao();
         }
+        else MostrarBotao();
         AtualizarQuantidade();
     }
 
@@ -43,7 +38,20 @@ public class ObstaculoUi : MonoBehaviour
         textoQuantidade.text = "x" + obstaculoACriar.quantidade;
     }
 
+    public void EsconderBotao()
+    {
+        canvasGroup.alpha = 0f;          // Torna o botão e os textos filhos invisíveis
+        canvasGroup.interactable = false;  // Impede que o botão reaja a cliques
+        canvasGroup.blocksRaycasts = false;// Faz o clique do mouse "atravessar" o botão
+    }
 
+    // Chame esta função para MOSTRAR o botão de volta
+    public void MostrarBotao()
+    {
+        canvasGroup.alpha = 1f;          // Torna visível novamente
+        canvasGroup.interactable = true;   // Ativa os cliques
+        canvasGroup.blocksRaycasts = true; // Bloqueia o mouse para poder clicar
+    }
 
 
 }

@@ -1,112 +1,228 @@
-using Unity.VisualScripting;
+using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
 using UnityEngine.Tilemaps;
+using UnityEngine.UIElements;
 
 public class MineiroMovement : MonoBehaviour
 {
+    [Header("Configurações de Movimento")]
+    [SerializeField] private float tempoEntrePassos = 1f; 
+    
+    private float movimentoTimer = 0.0f;
+    private Vector3 ultimaPosicao;
+    public Vector3 destinoAtual;
 
-    [SerializeField] private Tilemap mapaDoOuro;
-    [SerializeField] private Tilemap mapaDoOuroFalso;
+    public MapGrid mapa;
 
-    private NavMeshAgent agent;
+    public List<Node> caminhoParaOOuro = new List<Node>();
+    
+    public UnityEvent AoChegarNoDestino;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
-        agent = GetComponent<NavMeshAgent>();    
-        agent.updateRotation = false;
-        agent.updateUpAxis = false;
-
+        ultimaPosicao = transform.position;
+        destinoAtual = transform.position;
     }
-    // Update is called once per frame
+
     void Update()
     {
-        //agent.SetDestination(target.position);
+        // Se temos um caminho a seguir, o relógio começa a contar
+        if (caminhoParaOOuro.Count > 0)
+        {
+            movimentoTimer += Time.deltaTime;
+
+            /* Quando o relógio bater o tempo do passo, nós andamos
+            if (movimentoTimer >= tempoEntrePassos)
+            {
+                DarUmPasso();
+                
+                // Zera o relógio para o próximo passo
+                movimentoTimer = 0f; 
+            }*/
+            transform.position= math.lerp(ultimaPosicao,destinoAtual,movimentoTimer/tempoEntrePassos);
+            if(movimentoTimer >= tempoEntrePassos)
+            {
+                DarUmPasso();
+                movimentoTimer =0;
+            }
+
+        }
     }
 
-    public void CalcularDestino()
+    private void DarUmPasso()
     {
-        agent.SetDestination(EncontrarOuroMaisProximoPorCaminho());
-    }
-
-    public Vector3 EncontrarOuroMaisProximoPorCaminho()
-    {
-        Vector3 posicaoMineiro = transform.position;
-        Vector3 posicaoMaisProxima = Vector3.zero;
+        // 1. Pega o próximo destino
+        Node proximoNo = caminhoParaOOuro[0];
         
-        float menorCaminhoReal = Mathf.Infinity; 
-        bool achouOuro = false;
+        // 2. Remove da lista para não andarmos para o mesmo lugar duas vezes
+        caminhoParaOOuro.RemoveAt(0);
 
-        NavMeshPath caminhoSimulado = new NavMeshPath();
+        ultimaPosicao = destinoAtual;
+        transform.position = ultimaPosicao;
+        destinoAtual = mapa.ObterPosicaoMundo(proximoNo);
 
-        foreach (Vector3Int posicaoGrid in mapaDoOuro.cellBounds.allPositionsWithin)
+        // 4. Verifica se acabaram os passos
+        if (caminhoParaOOuro.Count == 0)
         {
-            if (mapaDoOuro.HasTile(posicaoGrid))
-            {
-                Vector3 posicaoMundo = mapaDoOuro.GetCellCenterWorld(posicaoGrid);
-
-                if (NavMesh.CalculatePath(posicaoMineiro, posicaoMundo, NavMesh.AllAreas, caminhoSimulado))
-                {
-                    if (caminhoSimulado.status == NavMeshPathStatus.PathComplete)
-                    {
-                        float comprimentoDoCaminho = CalcularComprimentoDoCaminho(caminhoSimulado);
-
-                        if (comprimentoDoCaminho < menorCaminhoReal)
-                        {
-                            menorCaminhoReal = comprimentoDoCaminho;
-                            posicaoMaisProxima = posicaoMundo;
-                            achouOuro = true;
-                        }
-                    }
-                }
-            }
+            ChegouDestino();
         }
-
-        foreach (Vector3Int posicaoGrid in mapaDoOuroFalso.cellBounds.allPositionsWithin)
-        {
-            if (mapaDoOuroFalso.HasTile(posicaoGrid))
-            {
-                Vector3 posicaoMundo = mapaDoOuroFalso.GetCellCenterWorld(posicaoGrid);
-
-                if (NavMesh.CalculatePath(posicaoMineiro, posicaoMundo, NavMesh.AllAreas, caminhoSimulado))
-                {
-                    if (caminhoSimulado.status == NavMeshPathStatus.PathComplete)
-                    {
-                        float comprimentoDoCaminho = CalcularComprimentoDoCaminho(caminhoSimulado);
-
-                        if (comprimentoDoCaminho < menorCaminhoReal)
-                        {
-                            menorCaminhoReal = comprimentoDoCaminho;
-                            posicaoMaisProxima = posicaoMundo;
-                            achouOuro = true;
-                        }
-                    }
-                }
-            }
-        }
-
-        if (achouOuro) return posicaoMaisProxima;
-        Debug.Log("Nn achei");
-
-        return posicaoMineiro; // Fica parado se não houver caminho alcançável
     }
 
-    private float CalcularComprimentoDoCaminho(NavMeshPath caminho)
+
+    private void ChegouDestino()
     {
-        // Se o caminho tem menos de 2 pontos, a distância é zero
-        if (caminho.corners.Length < 2) return 0f;
+        Debug.Log("Cheguei no destino final!");
+        AoChegarNoDestino?.Invoke();
+        // Aqui você pode colocar a lógica para pegar o ouro, tocar animação, etc.
+    }
 
-        float distanciaTotal = 0f;
-
-        // 'corners' são os nós/vértices do caminho calculado pelo NavMesh
-        for (int i = 1; i < caminho.corners.Length; i++)
+    private bool chegouDestinoAtual()
+    {
+        if (Vector3.Distance(transform.position,destinoAtual)<0.05f)
         {
-            // Soma a distância entre o ponto anterior e o ponto atual
-            distanciaTotal += Vector3.Distance(caminho.corners[i - 1], caminho.corners[i]);
+            return true;
+        }
+        return false;
+    }
+
+    private void chegouDestino()
+    {
+        
+    }
+
+    private void Caminhar()
+    {
+        if (chegouDestinoAtual())
+        {
+            if (!PegarProximoDestino())
+            {
+                chegouDestino();
+                return;
+            }
         }
 
-        return distanciaTotal;
+        
+
     }
+
+    private bool PegarProximoDestino()
+    {
+        if (caminhoParaOOuro.Count > 0)
+        {
+            destinoAtual = mapa.ObterPosicaoMundo(caminhoParaOOuro[0]);
+            caminhoParaOOuro.RemoveAt(0);
+            return true;
+        }
+        return false;
+    }
+
+
+    public bool AcharOuroMaisProximo()
+    {
+        // Garante que o mapa foi gerado antes de buscar
+        if (mapa != null && mapa.grid != null) 
+        {
+            Vector3 pos_atual = transform.position;
+            Vector3Int pos_tile_atual = mapa.chaoTilemap.WorldToCell(pos_atual);
+
+            // Converte a posição do Tilemap para os índices da nossa matriz
+            int startX = pos_tile_atual.x - mapa.mapaBounds.xMin;
+            int startY = pos_tile_atual.y - mapa.mapaBounds.yMin;
+
+            // Proteção: verifica se o mineiro está fora dos limites do mapa
+            if (startX < 0 || startX >= mapa.mapaBounds.size.x || startY < 0 || startY >= mapa.mapaBounds.size.y)
+                return false;
+
+            Node startNode = mapa.grid[startX, startY];
+
+            // Inicializa o BFS
+            Queue<Node> fila = new Queue<Node>();
+            HashSet<Node> visitados = new HashSet<Node>(); // Impede que ele olhe o mesmo bloco duas vezes
+
+            fila.Enqueue(startNode);
+            visitados.Add(startNode);
+
+            while (fila.Count > 0)
+            {
+                Node atual = fila.Dequeue();
+
+                // Achou o ouro!
+                if (atual.temOuro)
+                {
+                    ConstruirCaminho(startNode, atual);
+                    return true; 
+                }
+
+                // Pega os 4 vizinhos (Cima, Baixo, Esquerda, Direita)
+                List<Node> vizinhos = ObterVizinhos(atual);
+
+                foreach (Node vizinho in vizinhos)
+                {
+                    // Se ainda não olhamos esse bloco e se não for uma parede...
+                    if (!visitados.Contains(vizinho) && vizinho.isWalkable)
+                    {
+                        vizinho.parent = atual; // Deixa a "migalha de pão" para saber de onde viemos
+                        visitados.Add(vizinho);
+                        fila.Enqueue(vizinho);
+                    }
+                }
+            }
+        }
+        
+        return false; // Varreu o mapa todo e não achou nenhum ouro alcançável
+    }
+
+    private List<Node> ObterVizinhos(Node node)
+    {
+        List<Node> vizinhos = new List<Node>();
+        int width = mapa.mapaBounds.size.x;
+        int height = mapa.mapaBounds.size.y;
+
+        // Direita
+        if (node.gridX + 1 < width) 
+                vizinhos.Add(mapa.grid[node.gridX + 1, node.gridY]);
+        // Esquerda
+        if (node.gridX - 1 >= 0) 
+                vizinhos.Add(mapa.grid[node.gridX - 1, node.gridY]);
+        // Cima
+        if (node.gridY + 1 < height) 
+                vizinhos.Add(mapa.grid[node.gridX, node.gridY + 1]);
+        // Baixo
+        if (node.gridY - 1 >= 0) 
+                vizinhos.Add(mapa.grid[node.gridX, node.gridY - 1]);
+
+        return vizinhos;
+    }
+
+    public void setGrid(MapGrid _mapa)
+    {
+        mapa = _mapa;
+    }
+
+    private void ConstruirCaminho(Node inicio, Node alvo)
+    {
+        caminhoParaOOuro.Clear();
+        Node atual = alvo;
+
+        // Vai voltando pelos pais até chegar no início
+        while (atual != inicio)
+        {
+            caminhoParaOOuro.Add(atual);
+            atual = atual.parent;
+        }
+
+        // Como adicionamos do ouro para o mineiro, a lista está invertida. 
+        // Invertemos para que o índice 0 seja o próximo passo do mineiro.
+        caminhoParaOOuro.Reverse(); 
+        
+        Debug.Log("Ouro encontrado! Passos até ele: " + caminhoParaOOuro.Count);
+    }
+
+    // Transforma um Node da matriz em uma posição Vector3 real no mundo
+    
 
 }

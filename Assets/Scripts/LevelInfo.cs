@@ -14,15 +14,16 @@ public class obstaculoslevel
 
 public class LevelInfo : MonoBehaviour
 {
-    [Header("Configurações da UI")]
+    [Header("Funcionamento da UI")]
     [SerializeField] private GameObject botaoPrefab;
     [SerializeField] private Transform containerDeBotoes; 
 
-    [Header("Configuração seleção")]
+    [Header("Funcionamento seleção")]
     [SerializeField] private SistemaDeConstrucao sistema;
 
+    [Header("OBSTÁCULOS DO NÍVEL, INSIRA OS OBSTÁCULOS DESEJADOS ABAIXO")]
     public obstaculoslevel[] obstaculos;
-
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

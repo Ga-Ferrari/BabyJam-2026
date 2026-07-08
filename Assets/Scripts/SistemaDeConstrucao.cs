@@ -1,18 +1,43 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Tilemaps;
+using System;
+using UnityEditor;
+using Cinemachine;
 
 public class SistemaDeConstrucao : MonoBehaviour
 {
+    
+    [NonSerialized]public bool podeMexer = true;
 
-    public obstaculoslevel obstaculoSelecionado;
-    [SerializeField]private Dictionary<TipoTilemap, Tilemap> tabelaDeMapas = new Dictionary<TipoTilemap, Tilemap>();
+    [Header("Configuração do nível")]
+    [SerializeField] private bool podePosicionarEmParedes;
+
+    private obstaculoslevel obstaculoSelecionado;
+    [SerializeField] private DadosDoObstaculo obstaculoNaoPosicionavel;
+    private Tilemap mapaProibidoPosicionar;
+    private Tilemap mapaPosicionadoPeloPlayer;
+    private Dictionary<Vector3Int,obstaculoslevel> obstaculoPosicionado = new Dictionary<Vector3Int, obstaculoslevel>();
+
+    private Dictionary<TipoTilemap, Tilemap> tabelaDeMapas = new Dictionary<TipoTilemap, Tilemap>();
+
+
+    
+
+    void Awake()
+    {
+        
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         MapearTilemapsDaCena();
+        if(tabelaDeMapas.TryGetValue(TipoTilemap.NaoPosicionavel,out Tilemap t))
+            mapaProibidoPosicionar = t;
+        if(tabelaDeMapas.TryGetValue(TipoTilemap.PosicionadoPeloPlayer,out Tilemap c))
+            mapaPosicionadoPeloPlayer = c;
+        BloquearPosicionamentos();
     }
 
     // Update is called once per frame
@@ -21,6 +46,24 @@ public class SistemaDeConstrucao : MonoBehaviour
         
     }
 
+    public TipoTilemap TipoDaTileAt(Vector3 posicao)
+    {
+        tabelaDeMapas.TryGetValue(TipoTilemap.Fundo,out Tilemap c);
+        Vector3Int posicaoCelula = c.WorldToCell(posicao);
+        
+        tabelaDeMapas.TryGetValue(TipoTilemap.OuroFalso,out Tilemap of);
+        if(of.HasTile(posicaoCelula))return TipoTilemap.OuroFalso;
+        return TipoTilemap.NaoPosicionavel;
+    }
+
+    public bool tileMapTemTileAt(TipoTilemap tipo,Vector3 posicao)
+    {
+        if(tabelaDeMapas.TryGetValue(tipo,out Tilemap t))
+        {
+            return t.HasTile(t.WorldToCell(posicao));
+        }
+        return false;
+    }
 
     public void SelecionarObstaculo(obstaculoslevel dadosObstaculo)
     {
@@ -34,6 +77,38 @@ public class SistemaDeConstrucao : MonoBehaviour
         {
             obstaculoSelecionado = dadosObstaculo;
         }
+    }
+
+    private void BloquearPosicionamentos()
+    {
+        if(tabelaDeMapas.TryGetValue(TipoTilemap.Ouro,out Tilemap mapaOuro))
+        {
+            Debug.Log("Achou na tabela");
+            foreach (Vector3Int posicao in mapaOuro.cellBounds.allPositionsWithin)
+            {
+                Debug.Log("Loopando");
+                if (mapaOuro.HasTile(posicao))
+                {
+                    Debug.Log("Antes do posicionamento");
+                    mapaProibidoPosicionar.SetTile(posicao,obstaculoNaoPosicionavel.tileAsset);
+                    Debug.Log("Ouro na posicao"+posicao);
+                }
+            }
+        }
+        if (!podePosicionarEmParedes)
+        {
+            if(tabelaDeMapas.TryGetValue(TipoTilemap.Paredes,out Tilemap mapaParede))
+            {
+                foreach (Vector3Int posicao in mapaParede.cellBounds.allPositionsWithin)
+                {
+                    if (mapaParede.HasTile(posicao))
+                    {
+                        mapaProibidoPosicionar.SetTile(posicao,obstaculoNaoPosicionavel.tileAsset);
+                    }
+                }
+            }
+        }
+        
     }
 
     private void MapearTilemapsDaCena()
@@ -54,23 +129,25 @@ public class SistemaDeConstrucao : MonoBehaviour
         }
     }
     private void ColocarTileNoMapa(Vector2 posicaoTela)
-{
-       
-        if (obstaculoSelecionado.obstaculo == null)return;
-       
-        if (tabelaDeMapas.TryGetValue(obstaculoSelecionado.obstaculo.tipoDeMapaAlvo, out Tilemap mapaAlvo))
     {
+
+        if ( obstaculoSelecionado == null||obstaculoSelecionado.obstaculo == null) return;
+
         // 1. Pega o Vector2 da tela e converte para Vector3 do mundo usando a Câmera
         Vector3 posicaoMouseMundo = Camera.main.ScreenToWorldPoint(new Vector3(posicaoTela.x, posicaoTela.y, Camera.main.nearClipPlane));
         posicaoMouseMundo.z = 0; // Trava no plano 2D
 
-        // 2. Converte do mundo para a grade (Grid)
-        Vector3Int coordenadaGrid = mapaAlvo.WorldToCell(posicaoMouseMundo);
+        Vector3Int coordenadaPlayer = mapaPosicionadoPeloPlayer.WorldToCell(posicaoMouseMundo);
+        Vector3Int coordenadaNaoPode = mapaProibidoPosicionar.WorldToCell(posicaoMouseMundo);
 
-        // 3. Coloca a Tile se estiver vazio
-        if (!mapaAlvo.HasTile(coordenadaGrid))
+        if (!mapaProibidoPosicionar.HasTile(coordenadaNaoPode))
         {
-            mapaAlvo.SetTile(coordenadaGrid, obstaculoSelecionado.obstaculo.tileAsset);
+            if (mapaPosicionadoPeloPlayer.HasTile(coordenadaPlayer))
+            {
+                RemoverTileDoMapa(posicaoMouseMundo);
+            }
+            mapaPosicionadoPeloPlayer.SetTile(coordenadaPlayer,obstaculoSelecionado.obstaculo.tileAsset);
+            obstaculoPosicionado.Add(coordenadaPlayer,obstaculoSelecionado);
             obstaculoSelecionado.quantidade--;
             
             if (obstaculoSelecionado.quantidade <= 0)
@@ -78,19 +155,84 @@ public class SistemaDeConstrucao : MonoBehaviour
                 obstaculoSelecionado = null; // Deseleciona se acabar
             }
         }
+                
+        
     }
-}
-
-    public void OnPosicionar(InputAction.CallbackContext context)
+                
+    public void removerTile(TipoTilemap tipo,Vector3 posicao)
     {
-        if (context.performed)
+        if(tabelaDeMapas.TryGetValue(tipo,out Tilemap t))
         {
-            
-            Vector2 posicaoMouseTela = Mouse.current.position.value;    
-            // 2. Passa essa posição para a sua função de colocar Tile
-            ColocarTileNoMapa(posicaoMouseTela);
-            Debug.Log("Clicado");
+            t.SetTile(t.WorldToCell(posicao),null);
         }
+    }
+
+
+    private void RemoverTileDoMapa(Vector2 posicaoMundo)
+    {
+        Vector3Int celula = mapaPosicionadoPeloPlayer.WorldToCell(posicaoMundo);
+        if(obstaculoPosicionado.TryGetValue(celula,out obstaculoslevel obstaculo))
+        {
+            mapaPosicionadoPeloPlayer.SetTile(celula,null);
+            
+            obstaculo.quantidade++;
+            obstaculoPosicionado.Remove(celula);
+        
+        }
+    }
+
+
+    public void DesativarMapas()
+    {
+        podeMexer = false;
+        mapaPosicionadoPeloPlayer.GetComponent<Renderer>().enabled = false;
+        mapaProibidoPosicionar.GetComponent<Renderer>().enabled = false;
+    }
+
+    public void AplicarMudancas()
+    {   
+        DesativarMapas();
+        foreach( (Vector3Int posicao,obstaculoslevel obstaculo) in obstaculoPosicionado)
+        {
+            posicionarTile(posicao,obstaculo.obstaculo);
+        }
+        
+    }
+
+    private bool posicionarTile(Vector3Int pos,DadosDoObstaculo _dadosDoObstaculo)
+    {
+        if(tabelaDeMapas.TryGetValue(_dadosDoObstaculo.tipoDeMapaAlvo,out Tilemap alvo))
+        {
+            alvo.SetTile(pos,_dadosDoObstaculo.tileAsset);
+            return true;
+        }
+
+        return false;
+
+    }
+
+    public void OnPosicionar()
+    {
+        Debug.Log("Ação feita");
+        if (podeMexer)
+        {
+            Vector2 posicaoMouseTela = Mouse.current.position.value;    
+            ColocarTileNoMapa(posicaoMouseTela);
+        }
+    }
+
+    public void OnRemover()
+    {
+        if (podeMexer)
+        {
+            Vector2 posicaoMouseTela = Mouse.current.position.value;    
+            Vector3 posicaoMouseMundo = Camera.main.ScreenToWorldPoint(new Vector3(posicaoMouseTela.x, posicaoMouseTela.y, Camera.main.nearClipPlane));
+            posicaoMouseMundo.z = 0; // Trava no plano 2D
+            
+
+            RemoverTileDoMapa(posicaoMouseMundo);
+        }
+        
     }
 
 }
