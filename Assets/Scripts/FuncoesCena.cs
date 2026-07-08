@@ -2,20 +2,21 @@ using NavMeshPlus.Components;
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
+using Cinemachine;
 
 public class FuncoesCena : MonoBehaviour
 {
 
-    [SerializeField]private NavMeshSurface nav;
     [SerializeField]private MineiroMovement mineiro;
-
+    [SerializeField] private CinemachineVirtualCamera camera;
     private SistemaDeConstrucao sistemaDeConstrucao;
+    private MapGrid map;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Time.timeScale = 0;
         sistemaDeConstrucao = GetComponent<SistemaDeConstrucao>();
+        map = GetComponent<MapGrid>();
     }
 
     public void PlayTheGame()
@@ -28,26 +29,28 @@ public class FuncoesCena : MonoBehaviour
     {
         // 1. Volta o tempo ao normal para a física voltar a funcionar
         timeUnfreeze();
-
-        sistemaDeConstrucao.DesativarMapas();
-        // 2. Pega o componente do agente no mineiro e DESLIGA ele
-        NavMeshAgent agenteDoMineiro = mineiro.GetComponent<NavMeshAgent>();
-        if (agenteDoMineiro != null) agenteDoMineiro.enabled = false;
-
-        // 3. Cozinha (Bake) o novo mapa com os obstáculos
-        nav.BuildNavMesh();
-
-        // 4. Espera a física do jogo atualizar (Isso é crucial após mudar o TimeScale)
-        yield return new WaitForFixedUpdate();
-
-        // 5. LIGA o agente novamente. Ao ser ligado, ele é forçado a reconhecer o chão novo.
-        if (agenteDoMineiro != null) agenteDoMineiro.enabled = true;
-
-        // 6. Espera só mais 1 frame normal para garantir que ele está pronto
+        camera.Follow = mineiro.transform;
+        sistemaDeConstrucao.AplicarMudancas();
         yield return null;
+        map.InicializarGrid();
+        yield return null;
+        mineiro.setGrid(map);
+        mineiro.AcharOuroMaisProximo();
+    }
 
-        // 7. Agora sim! O agente está firme no chão e calcula perfeitamente
-        mineiro.CalcularDestino();
+    public void MineiroChegou()
+    {
+        if (sistemaDeConstrucao.tileMapTemTileAt(TipoTilemap.OuroFalso, mineiro.destinoAtual))
+        {
+            sistemaDeConstrucao.removerTile(TipoTilemap.OuroFalso,mineiro.transform.position);
+            map.InicializarGrid();
+            mineiro.AcharOuroMaisProximo();
+            Debug.Log("Tentando ir para o proximo lugar");
+        }
+        if (sistemaDeConstrucao.tileMapTemTileAt(TipoTilemap.Ouro, mineiro.destinoAtual))
+        {
+            Debug.Log("Você perdeu");
+        }
     }
 
     public void timeUnfreeze()

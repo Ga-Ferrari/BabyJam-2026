@@ -2,19 +2,33 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
+using System;
+using UnityEditor;
+using Cinemachine;
 
 public class SistemaDeConstrucao : MonoBehaviour
 {
-    public bool podeMexer = true;
-    public obstaculoslevel obstaculoSelecionado;
+    
+    [NonSerialized]public bool podeMexer = true;
+
+    [Header("Configuração do nível")]
+    [SerializeField] private bool podePosicionarEmParedes;
+
+    private obstaculoslevel obstaculoSelecionado;
+    [SerializeField] private DadosDoObstaculo obstaculoNaoPosicionavel;
     private Tilemap mapaProibidoPosicionar;
     private Tilemap mapaPosicionadoPeloPlayer;
-
     private Dictionary<Vector3Int,obstaculoslevel> obstaculoPosicionado = new Dictionary<Vector3Int, obstaculoslevel>();
 
-    [SerializeField]private Dictionary<TipoTilemap, Tilemap> tabelaDeMapas = new Dictionary<TipoTilemap, Tilemap>();
+    private Dictionary<TipoTilemap, Tilemap> tabelaDeMapas = new Dictionary<TipoTilemap, Tilemap>();
+
 
     
+
+    void Awake()
+    {
+        
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -22,8 +36,9 @@ public class SistemaDeConstrucao : MonoBehaviour
         MapearTilemapsDaCena();
         if(tabelaDeMapas.TryGetValue(TipoTilemap.NaoPosicionavel,out Tilemap t))
             mapaProibidoPosicionar = t;
-        if(tabelaDeMapas.TryGetValue(TipoTilemap.NaoPosicionavel,out Tilemap c))
+        if(tabelaDeMapas.TryGetValue(TipoTilemap.PosicionadoPeloPlayer,out Tilemap c))
             mapaPosicionadoPeloPlayer = c;
+        BloquearPosicionamentos();
     }
 
     // Update is called once per frame
@@ -32,6 +47,24 @@ public class SistemaDeConstrucao : MonoBehaviour
         
     }
 
+    public TipoTilemap TipoDaTileAt(Vector3 posicao)
+    {
+        tabelaDeMapas.TryGetValue(TipoTilemap.Fundo,out Tilemap c);
+        Vector3Int posicaoCelula = c.WorldToCell(posicao);
+        
+        tabelaDeMapas.TryGetValue(TipoTilemap.OuroFalso,out Tilemap of);
+        if(of.HasTile(posicaoCelula))return TipoTilemap.OuroFalso;
+        return TipoTilemap.NaoPosicionavel;
+    }
+
+    public bool tileMapTemTileAt(TipoTilemap tipo,Vector3 posicao)
+    {
+        if(tabelaDeMapas.TryGetValue(tipo,out Tilemap t))
+        {
+            return t.HasTile(t.WorldToCell(posicao));
+        }
+        return false;
+    }
 
     public void SelecionarObstaculo(obstaculoslevel dadosObstaculo)
     {
@@ -45,6 +78,38 @@ public class SistemaDeConstrucao : MonoBehaviour
         {
             obstaculoSelecionado = dadosObstaculo;
         }
+    }
+
+    private void BloquearPosicionamentos()
+    {
+        if(tabelaDeMapas.TryGetValue(TipoTilemap.Ouro,out Tilemap mapaOuro))
+        {
+            Debug.Log("Achou na tabela");
+            foreach (Vector3Int posicao in mapaOuro.cellBounds.allPositionsWithin)
+            {
+                Debug.Log("Loopando");
+                if (mapaOuro.HasTile(posicao))
+                {
+                    Debug.Log("Antes do posicionamento");
+                    mapaProibidoPosicionar.SetTile(posicao,obstaculoNaoPosicionavel.tileAsset);
+                    Debug.Log("Ouro na posicao"+posicao);
+                }
+            }
+        }
+        if (!podePosicionarEmParedes)
+        {
+            if(tabelaDeMapas.TryGetValue(TipoTilemap.Paredes,out Tilemap mapaParede))
+            {
+                foreach (Vector3Int posicao in mapaParede.cellBounds.allPositionsWithin)
+                {
+                    if (mapaParede.HasTile(posicao))
+                    {
+                        mapaProibidoPosicionar.SetTile(posicao,obstaculoNaoPosicionavel.tileAsset);
+                    }
+                }
+            }
+        }
+        
     }
 
     private void MapearTilemapsDaCena()
@@ -69,38 +134,39 @@ public class SistemaDeConstrucao : MonoBehaviour
 
         if ( obstaculoSelecionado == null||obstaculoSelecionado.obstaculo == null) return;
 
-        if (tabelaDeMapas.TryGetValue(obstaculoSelecionado.obstaculo.tipoDeMapaAlvo, out Tilemap mapaAlvo))
+        // 1. Pega o Vector2 da tela e converte para Vector3 do mundo usando a Câmera
+        Vector3 posicaoMouseMundo = Camera.main.ScreenToWorldPoint(new Vector3(posicaoTela.x, posicaoTela.y, Camera.main.nearClipPlane));
+        posicaoMouseMundo.z = 0; // Trava no plano 2D
+
+        Vector3Int coordenadaPlayer = mapaPosicionadoPeloPlayer.WorldToCell(posicaoMouseMundo);
+        Vector3Int coordenadaNaoPode = mapaProibidoPosicionar.WorldToCell(posicaoMouseMundo);
+
+        if (!mapaProibidoPosicionar.HasTile(coordenadaNaoPode))
         {
-            // 1. Pega o Vector2 da tela e converte para Vector3 do mundo usando a Câmera
-            Vector3 posicaoMouseMundo = Camera.main.ScreenToWorldPoint(new Vector3(posicaoTela.x, posicaoTela.y, Camera.main.nearClipPlane));
-            posicaoMouseMundo.z = 0; // Trava no plano 2D
-
-            // 2. Converte do mundo para a grade (Grid)
-            Vector3Int coordenadaGrid = mapaAlvo.WorldToCell(posicaoMouseMundo);
-            Vector3Int coordenadaPlayer = mapaPosicionadoPeloPlayer.WorldToCell(posicaoMouseMundo);
-            Vector3Int coordenadaNaoPode = mapaProibidoPosicionar.WorldToCell(posicaoMouseMundo);
-
-            if (!mapaProibidoPosicionar.HasTile(coordenadaNaoPode))
+            if (mapaPosicionadoPeloPlayer.HasTile(coordenadaPlayer))
             {
-                if (!mapaPosicionadoPeloPlayer.HasTile(coordenadaPlayer))
-                {
-                    RemoverTileDoMapa(posicaoMouseMundo);
-                }
-
-                mapaAlvo.SetTile(coordenadaGrid, obstaculoSelecionado.obstaculo.tileAsset);
-                mapaPosicionadoPeloPlayer.SetTile(coordenadaPlayer,obstaculoSelecionado.obstaculo.tileAsset);
-                obstaculoPosicionado.Add(coordenadaPlayer,obstaculoSelecionado);
-                obstaculoSelecionado.quantidade--;
-                
-                if (obstaculoSelecionado.quantidade <= 0)
-                {
-                    obstaculoSelecionado = null; // Deseleciona se acabar
-                }
+                RemoverTileDoMapa(posicaoMouseMundo);
             }
-                
+            mapaPosicionadoPeloPlayer.SetTile(coordenadaPlayer,obstaculoSelecionado.obstaculo.tileAsset);
+            obstaculoPosicionado.Add(coordenadaPlayer,obstaculoSelecionado);
+            obstaculoSelecionado.quantidade--;
+            
+            if (obstaculoSelecionado.quantidade <= 0)
+            {
+                obstaculoSelecionado = null; // Deseleciona se acabar
+            }
         }
+                
+        
     }
                 
+    public void removerTile(TipoTilemap tipo,Vector3 posicao)
+    {
+        if(tabelaDeMapas.TryGetValue(tipo,out Tilemap t))
+        {
+            t.SetTile(t.WorldToCell(posicao),null);
+        }
+    }
 
 
     private void RemoverTileDoMapa(Vector2 posicaoMundo)
@@ -112,12 +178,6 @@ public class SistemaDeConstrucao : MonoBehaviour
             
             obstaculo.quantidade++;
             obstaculoPosicionado.Remove(celula);
-
-            if (tabelaDeMapas.TryGetValue(obstaculo.obstaculo.tipoDeMapaAlvo, out Tilemap mapaAlvo))
-            {
-                Vector3Int celulaAlvo = mapaAlvo.WorldToCell(posicaoMundo);
-                mapaAlvo.SetTile(celulaAlvo,null);
-            }
         
         }
     }
@@ -130,23 +190,42 @@ public class SistemaDeConstrucao : MonoBehaviour
         mapaProibidoPosicionar.GetComponent<Renderer>().enabled = false;
     }
 
-    public void OnPosicionar(InputAction.CallbackContext context)
-    {
-        if (context.performed&& podeMexer)
+    public void AplicarMudancas()
+    {   
+        DesativarMapas();
+        foreach( (Vector3Int posicao,obstaculoslevel obstaculo) in obstaculoPosicionado)
         {
-            
+            posicionarTile(posicao,obstaculo.obstaculo);
+        }
+        
+    }
+
+    private bool posicionarTile(Vector3Int pos,DadosDoObstaculo _dadosDoObstaculo)
+    {
+        if(tabelaDeMapas.TryGetValue(_dadosDoObstaculo.tipoDeMapaAlvo,out Tilemap alvo))
+        {
+            alvo.SetTile(pos,_dadosDoObstaculo.tileAsset);
+            return true;
+        }
+
+        return false;
+
+    }
+
+    public void OnPosicionar()
+    {
+        Debug.Log("Ação feita");
+        if (podeMexer)
+        {
             Vector2 posicaoMouseTela = Mouse.current.position.value;    
-            // 2. Passa essa posição para a sua função de colocar Tile
             ColocarTileNoMapa(posicaoMouseTela);
         }
     }
 
-    public void OnRemover(InputAction.CallbackContext context)
+    public void OnRemover()
     {
         if (podeMexer)
         {
-            Debug.Log("Entrou Remover");
-
             Vector2 posicaoMouseTela = Mouse.current.position.value;    
             Vector3 posicaoMouseMundo = Camera.main.ScreenToWorldPoint(new Vector3(posicaoMouseTela.x, posicaoMouseTela.y, Camera.main.nearClipPlane));
             posicaoMouseMundo.z = 0; // Trava no plano 2D

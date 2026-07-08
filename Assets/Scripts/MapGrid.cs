@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 
 public class Node
 {
@@ -9,6 +10,8 @@ public class Node
     public int gridY; // Posição Y na nossa matriz
     public bool isWalkable; // Dá para andar aqui? (False para paredes)
     public float movementCost; // Custo do terreno (Chão = 1, Lama = 3)
+    public bool temOuro;
+    public bool temOuroFalso;
 
     // --- 2. Variáveis exclusivas do algoritmo A* ---
     public float gCost; // Custo do caminho percorrido do início até este Node
@@ -21,47 +24,33 @@ public class Node
     }
 
     // --- 3. A "Migalha de pão" ---
-    public Node parent; // Guarda o Node de onde viemos para chegar até aqui
+    public Node parent; 
 
     // --- Construtor ---
     // Usado pela nossa função InicializarGrid() para criar a matriz
-    public Node(int _gridX, int _gridY, bool _isWalkable, float _movementCost)
+    public Node(int _gridX, int _gridY, bool _isWalkable, float _movementCost,bool _temOuro)
     {
         gridX = _gridX;
         gridY = _gridY;
         isWalkable = _isWalkable;
         movementCost = _movementCost;
+        temOuro = _temOuro;
     }
 }
 
 public class MapGrid : MonoBehaviour
 {
-
-
-    // Arraste seus diferentes tilemaps aqui pelo Inspector
     public Tilemap chaoTilemap;
     public Tilemap paredesTilemap;
     public Tilemap perigosTilemap; // Ex: espinhos, lama
+    public Tilemap ouroTilemap;
+    public Tilemap ouroFalsoTilemap;
 
-    // Limites do mapa
     public BoundsInt mapaBounds;
 
-    // A matriz lógica que o A* vai usar de verdade
-    private Node[,] grid;
+    public Node[,] grid;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    void InicializarGrid()
+    public void InicializarGrid()
     {
         // 1. Define o tamanho do mapa baseado no tilemap principal (chão)
         mapaBounds = chaoTilemap.cellBounds;
@@ -77,7 +66,7 @@ public class MapGrid : MonoBehaviour
                 // 3. Lê e processa a informação de cada camada para esta coordenada específica
                 bool éAndavel = true;
                 float custoMovimento = 1.0f; // Custo padrão
-
+                bool temOuro = false;
                 // Verifica se há uma parede nesta coordenada
                 if (paredesTilemap.HasTile(posTile))
                 {
@@ -85,9 +74,14 @@ public class MapGrid : MonoBehaviour
                 }
 
                 // Verifica se há lama/espinhos nesta coordenada para aumentar o custo
-                if (perigosTilemap.HasTile(posTile))
+                if (perigosTilemap&&perigosTilemap.HasTile(posTile))
                 {
                     custoMovimento = 3.0f; // Caminhar aqui é 3x mais "pesado" para o A*
+                }
+
+                if (ouroTilemap.HasTile(posTile)||ouroFalsoTilemap.HasTile(posTile))
+                {
+                    temOuro = true;
                 }
 
                 // Convertendo a coordenada do Tilemap para o índice da nossa matriz (começa em 0,0)
@@ -95,9 +89,21 @@ public class MapGrid : MonoBehaviour
                 int gridY = y - mapaBounds.yMin;
 
                 // 4. Cria o nó consolidado na memória
-                grid[gridX, gridY] = new Node(gridX, gridY, éAndavel, custoMovimento);
+                grid[gridX, gridY] = new Node(gridX, gridY, éAndavel, custoMovimento,temOuro);
             }
         }
+    }
+
+    public Vector3 ObterPosicaoMundo(Node node)
+    {
+        // 1. Reverte o índice da matriz para a coordenada interna do Tilemap
+        int tileX = node.gridX + mapaBounds.xMin;
+        int tileY = node.gridY + mapaBounds.yMin;
+        
+        Vector3Int posTile = new Vector3Int(tileX, tileY, 0);
+
+        // 2. A Unity calcula automaticamente o centro físico daquele Tile no mundo
+        return chaoTilemap.GetCellCenterWorld(posTile);
     }
 
 }

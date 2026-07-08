@@ -15,5 +15,6 @@ public enum TipoTilemap
     Ouro,
     OuroFalso,
     NaoPosicionavel,
-    PosicionadoPeloPlayer
+    PosicionadoPeloPlayer,
+    Obstaculos
 }
