@@ -1,7 +1,7 @@
-using UnityEngine;
-using UnityEngine.Tilemaps;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Tilemaps;
 
 public class SistemaDeConstrucao : MonoBehaviour
 {
@@ -55,9 +55,10 @@ public class SistemaDeConstrucao : MonoBehaviour
     }
     private void ColocarTileNoMapa(Vector2 posicaoTela)
 {
-    if (obstaculoSelecionado == null) return;
-
-    if (tabelaDeMapas.TryGetValue(obstaculoSelecionado.obstaculo.tipoDeMapaAlvo, out Tilemap mapaAlvo))
+       
+        if (obstaculoSelecionado.obstaculo == null)return;
+       
+        if (tabelaDeMapas.TryGetValue(obstaculoSelecionado.obstaculo.tipoDeMapaAlvo, out Tilemap mapaAlvo))
     {
         // 1. Pega o Vector2 da tela e converte para Vector3 do mundo usando a Câmera
         Vector3 posicaoMouseMundo = Camera.main.ScreenToWorldPoint(new Vector3(posicaoTela.x, posicaoTela.y, Camera.main.nearClipPlane));
