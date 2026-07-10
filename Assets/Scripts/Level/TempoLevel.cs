@@ -27,10 +27,10 @@ public class TempoLevel : MonoBehaviour
     }
 
 
-    public void decrementarPassos()
+    public void decrementarPassos(int valorDecremento)
     {
         Debug.Log("EntrouDecremento");
-        numeroPassos--;
+        numeroPassos-= valorDecremento;
         BarraPassos.value = numeroPassosTotal - numeroPassos;
         if (numeroPassos <= 0)
         {

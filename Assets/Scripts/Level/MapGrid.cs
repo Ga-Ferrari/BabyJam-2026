@@ -9,16 +9,16 @@ public class Node
     public int gridX; // Posição X na nossa matriz
     public int gridY; // Posição Y na nossa matriz
     public bool isWalkable; // Dá para andar aqui? (False para paredes)
-    public float movementCost; // Custo do terreno (Chão = 1, Lama = 3)
+    public int movementCost; // Custo do terreno (Chão = 1, Lama = 3)
     public bool temOuro;
     public bool temOuroFalso;
 
     // --- 2. Variáveis exclusivas do algoritmo A* ---
-    public float gCost; // Custo do caminho percorrido do início até este Node
-    public float hCost; // Heurística: Distância estimada deste Node até o alvo final
+    public int gCost; // Custo do caminho percorrido do início até este Node
+    public int hCost; // Heurística: Distância estimada deste Node até o alvo final
     
     // O Custo Total (F = G + H). O A* sempre vai escolher o Node com o menor F.
-    public float FCost 
+    public int FCost 
     {
         get { return gCost + hCost; }
     }
@@ -28,7 +28,7 @@ public class Node
 
     // --- Construtor ---
     // Usado pela nossa função InicializarGrid() para criar a matriz
-    public Node(int _gridX, int _gridY, bool _isWalkable, float _movementCost,bool _temOuro)
+    public Node(int _gridX, int _gridY, bool _isWalkable, int _movementCost,bool _temOuro)
     {
         gridX = _gridX;
         gridY = _gridY;
@@ -42,13 +42,16 @@ public class MapGrid : MonoBehaviour
 {
     public Tilemap chaoTilemap;
     public Tilemap paredesTilemap;
-    public Tilemap perigosTilemap; // Ex: espinhos, lama
+    public Tilemap LamaTilemap; // Ex: espinhos, lama
     public Tilemap ouroTilemap;
     public Tilemap ouroFalsoTilemap;
 
     public BoundsInt mapaBounds;
 
     public Node[,] grid;
+
+    public List<Node> TodosOsOurosReais = new List<Node>();
+    public List<Node> TodosOsOurosFalsos = new List<Node>();
 
     public void InicializarGrid()
     {
@@ -65,7 +68,7 @@ public class MapGrid : MonoBehaviour
 
                 // 3. Lê e processa a informação de cada camada para esta coordenada específica
                 bool éAndavel = true;
-                float custoMovimento = 1.0f; // Custo padrão
+                int custoMovimento = 1; // Custo padrão
                 bool temOuro = false;
                 // Verifica se há uma parede nesta coordenada
                 if (paredesTilemap.HasTile(posTile))
@@ -74,9 +77,9 @@ public class MapGrid : MonoBehaviour
                 }
 
                 // Verifica se há lama/espinhos nesta coordenada para aumentar o custo
-                if (perigosTilemap&&perigosTilemap.HasTile(posTile))
+                if (LamaTilemap&&LamaTilemap.HasTile(posTile))
                 {
-                    custoMovimento = 3.0f; // Caminhar aqui é 3x mais "pesado" para o A*
+                    custoMovimento = GameManager.Instance.LamaSlowDown; // Caminhar aqui é 3x mais "pesado" para o A*
                 }
 
                 if (ouroTilemap.HasTile(posTile)||ouroFalsoTilemap.HasTile(posTile))
@@ -89,7 +92,15 @@ public class MapGrid : MonoBehaviour
                 int gridY = y - mapaBounds.yMin;
 
                 // 4. Cria o nó consolidado na memória
-                grid[gridX, gridY] = new Node(gridX, gridY, éAndavel, custoMovimento,temOuro);
+                grid[gridX, gridY] = new Node(gridX, gridY, éAndavel,(int) custoMovimento,temOuro);
+                if (grid[gridX, gridY].temOuro)
+                {
+                    TodosOsOurosReais.Add(grid[gridX,gridY]);
+                }
+                if (grid[gridX, gridY].temOuroFalso)
+                {
+                    TodosOsOurosFalsos.Add(grid[gridX,gridY]);
+                }
             }
         }
     }

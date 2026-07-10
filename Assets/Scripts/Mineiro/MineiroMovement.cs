@@ -1,15 +1,14 @@
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.Events;
-using UnityEngine.Tilemaps;
-using UnityEngine.UIElements;
+using System;
 
 public class MineiroMovement : MonoBehaviour
 {
     [Header("Configurações de Movimento")]
-    [SerializeField] private float tempoEntrePassos = 1f; 
+    private int custoMovimentoAtual;
+    private float tempoEntrePassos; 
     
     private float movimentoTimer = 0.0f;
     private Vector3 ultimaPosicao;
@@ -20,20 +19,28 @@ public class MineiroMovement : MonoBehaviour
     public List<Node> caminhoParaOOuro = new List<Node>();
     
     public UnityEvent AoChegarNoDestino;
-    public UnityEvent AndouTile;
+    public UnityEvent<int> AndouTile;
 
+    [SerializeField]private SistemaDeConstrucao sistemaDeConstrucao;
+    private Animator animator;
+    private bool temCaminho=false;
 
     void Start()
     {
+        animator = GetComponent<Animator>();
+        animator.SetBool("Andando",false);
         ultimaPosicao = transform.position;
         destinoAtual = transform.position;
+        tempoEntrePassos = GameManager.Instance.VelocidadeMineiroBase;
     }
 
     void Update()
     {
         // Se temos um caminho a seguir, o relógio começa a contar
-        if (caminhoParaOOuro.Count > 0)
+        if (temCaminho)
         {
+            animator.SetBool("Andando",true);
+            ArrumarSprite();
             movimentoTimer += Time.deltaTime;
 
             /* Quando o relógio bater o tempo do passo, nós andamos
@@ -54,23 +61,50 @@ public class MineiroMovement : MonoBehaviour
         }
     }
 
+    private void ArrumarSprite()
+    {
+        int direcaoAtual = Math.Sign(destinoAtual.x-ultimaPosicao.x);
+        
+        if(direcaoAtual!= 0)
+        {
+            transform.localScale = new Vector2(direcaoAtual,1);
+        }
+    }
+
     private void DarUmPasso()
     {
+        // 4. Verifica se acabaram os passos
+        if (caminhoParaOOuro.Count == 0)
+        {
+            ChegouDestino();
+            return;
+        }
         // 1. Pega o próximo destino
         Node proximoNo = caminhoParaOOuro[0];
 
-        AndouTile?.Invoke();
+        AndouTile?.Invoke(custoMovimentoAtual);
         // 2. Remove da lista para não andarmos para o mesmo lugar duas vezes
         caminhoParaOOuro.RemoveAt(0);
 
         ultimaPosicao = destinoAtual;
         transform.position = ultimaPosicao;
         destinoAtual = mapa.ObterPosicaoMundo(proximoNo);
+        ResolverEfeitoTile();
+        
+        
+    }
 
-        // 4. Verifica se acabaram os passos
-        if (caminhoParaOOuro.Count == 0)
+    private void ResolverEfeitoTile()
+    {
+        if (sistemaDeConstrucao.tileMapTemTileAt(TipoTilemap.ObstaculoLama,ultimaPosicao))
         {
-            ChegouDestino();
+            tempoEntrePassos = GameManager.Instance.VelocidadeMineiroBase * GameManager.Instance.LamaSlowDown;
+            custoMovimentoAtual = GameManager.Instance.LamaSlowDown;
+        }
+        else
+        {
+            tempoEntrePassos = GameManager.Instance.VelocidadeMineiroBase;
+            custoMovimentoAtual = 1;
         }
     }
 
@@ -79,103 +113,79 @@ public class MineiroMovement : MonoBehaviour
     {
         Debug.Log("Cheguei no destino final!");
         AoChegarNoDestino?.Invoke();
+        animator.SetBool("Andando",false);
+        temCaminho = false;
         // Aqui você pode colocar a lógica para pegar o ouro, tocar animação, etc.
     }
 
-    private bool chegouDestinoAtual()
-    {
-        if (Vector3.Distance(transform.position,destinoAtual)<0.05f)
-        {
-            return true;
-        }
-        return false;
-    }
 
-    private void chegouDestino()
-    {
-        
-    }
-
-    private void Caminhar()
-    {
-        if (chegouDestinoAtual())
+    private void ResetarGridAEstrela()
+    {   
+        // Percorre todos os nós do grid e reseta os valores do A*
+        for (int x = 0; x < mapa.mapaBounds.size.x; x++)
         {
-            if (!PegarProximoDestino())
+            for (int y = 0; y < mapa.mapaBounds.size.y; y++)
             {
-                chegouDestino();
-                return;
+                Node node = mapa.grid[x, y];
+                if (node != null)
+                {
+                    node.gCost = int.MaxValue; // Reseta para "infinito"
+                    node.hCost = 0;
+                    node.parent = null;
+                }
             }
         }
-
-        
-
     }
-
-    private bool PegarProximoDestino()
-    {
-        if (caminhoParaOOuro.Count > 0)
-        {
-            destinoAtual = mapa.ObterPosicaoMundo(caminhoParaOOuro[0]);
-            caminhoParaOOuro.RemoveAt(0);
-            return true;
-        }
-        return false;
-    }
-
 
     public bool AcharOuroMaisProximo()
     {
-        // Garante que o mapa foi gerado antes de buscar
-        if (mapa != null && mapa.grid != null) 
+        temCaminho = true;
+        List<Node> todosOurosGenerico = new List<Node>();
+        todosOurosGenerico.AddRange(mapa.TodosOsOurosReais);
+        todosOurosGenerico.AddRange(mapa.TodosOsOurosFalsos);
+        if (mapa == null || mapa.grid == null || (mapa.TodosOsOurosFalsos.Count == 0&&mapa.TodosOsOurosReais.Count == 0)) 
+        return false;
+
+        Vector3Int pos_tile_atual = mapa.chaoTilemap.WorldToCell(transform.position);
+        int startX = pos_tile_atual.x - mapa.mapaBounds.xMin;
+        int startY = pos_tile_atual.y - mapa.mapaBounds.yMin;
+
+        if (startX < 0 || startX >= mapa.mapaBounds.size.x || startY < 0 || startY >= mapa.mapaBounds.size.y)
+            return false;
+
+        Node startNode = mapa.grid[startX, startY];
+
+        List<Node> melhorCaminhoEncontrado = null;
+        int menorCustoEncontrado = int.MaxValue;
+
+        // Roda o A* para cada ouro conhecido
+        foreach (Node ouroNode in todosOurosGenerico)
         {
-            Vector3 pos_atual = transform.position;
-            Vector3Int pos_tile_atual = mapa.chaoTilemap.WorldToCell(pos_atual);
+            List<Node> caminhoTestado = CalcularAEstrela(startNode, ouroNode);
 
-            // Converte a posição do Tilemap para os índices da nossa matriz
-            int startX = pos_tile_atual.x - mapa.mapaBounds.xMin;
-            int startY = pos_tile_atual.y - mapa.mapaBounds.yMin;
-
-            // Proteção: verifica se o mineiro está fora dos limites do mapa
-            if (startX < 0 || startX >= mapa.mapaBounds.size.x || startY < 0 || startY >= mapa.mapaBounds.size.y)
-                return false;
-
-            Node startNode = mapa.grid[startX, startY];
-
-            // Inicializa o BFS
-            Queue<Node> fila = new Queue<Node>();
-            HashSet<Node> visitados = new HashSet<Node>(); // Impede que ele olhe o mesmo bloco duas vezes
-
-            fila.Enqueue(startNode);
-            visitados.Add(startNode);
-
-            while (fila.Count > 0)
+            if (caminhoTestado != null && caminhoTestado.Count > 0)
             {
-                Node atual = fila.Dequeue();
+                // O custo total do caminho estará armazenado no gCost do último nó (o ouro)
+                int custoDesteCaminho = ouroNode.gCost;
 
-                // Achou o ouro!
-                if (atual.temOuro)
+                if (custoDesteCaminho < menorCustoEncontrado)
                 {
-                    ConstruirCaminho(startNode, atual);
-                    return true; 
-                }
-
-                // Pega os 4 vizinhos (Cima, Baixo, Esquerda, Direita)
-                List<Node> vizinhos = ObterVizinhos(atual);
-
-                foreach (Node vizinho in vizinhos)
-                {
-                    // Se ainda não olhamos esse bloco e se não for uma parede...
-                    if (!visitados.Contains(vizinho) && vizinho.isWalkable)
-                    {
-                        vizinho.parent = atual; // Deixa a "migalha de pão" para saber de onde viemos
-                        visitados.Add(vizinho);
-                        fila.Enqueue(vizinho);
-                    }
+                    menorCustoEncontrado = custoDesteCaminho;
+                    melhorCaminhoEncontrado = caminhoTestado;
                 }
             }
         }
-        
-        return false; // Varreu o mapa todo e não achou nenhum ouro alcançável
+
+        // Se achamos pelo menos um caminho válido
+        if (melhorCaminhoEncontrado != null)
+        {
+            caminhoParaOOuro = melhorCaminhoEncontrado;
+            Debug.Log($"Melhor ouro escolhido! Passos: {caminhoParaOOuro.Count} | Custo Total: {menorCustoEncontrado}");
+            return true;
+        }
+        temCaminho = false;
+
+        return false; // Nenhum ouro é alcançável
     }
 
     private List<Node> ObterVizinhos(Node node)
@@ -205,26 +215,88 @@ public class MineiroMovement : MonoBehaviour
         mapa = _mapa;
     }
 
-    private void ConstruirCaminho(Node inicio, Node alvo)
+
+    private List<Node> CalcularAEstrela(Node startNode, Node targetNode)
     {
-        caminhoParaOOuro.Clear();
+        ResetarGridAEstrela();
+        startNode.gCost = 0;   // O custo inicial deve ser 0
+
+        
+        List<Node> openSet = new List<Node>(); // Nós a serem avaliados
+        HashSet<Node> closedSet = new HashSet<Node>(); // Nós já avaliados
+
+        openSet.Add(startNode);
+
+        while (openSet.Count > 0)
+        {
+            Node currentNode = openSet[0];
+
+            // Acha o nó com o menor fCost na lista aberta
+            for (int i = 1; i < openSet.Count; i++)
+            {
+                if (openSet[i].FCost < currentNode.FCost || (openSet[i].FCost == currentNode.FCost && openSet[i].hCost < currentNode.hCost))
+                {
+                    currentNode = openSet[i];
+                }
+            }
+
+            openSet.Remove(currentNode);
+            closedSet.Add(currentNode);
+
+            // Se chegou no destino, reconstrói o caminho e retorna
+            if (currentNode == targetNode)
+            {
+                return RetornarCaminhoCalculado(startNode, targetNode);
+            }
+
+            // Verifica os vizinhos (reaproveitando o seu método ObterVizinhos)
+            foreach (Node vizinho in ObterVizinhos(currentNode))
+            {
+                if (!vizinho.isWalkable || closedSet.Contains(vizinho))
+                    continue;
+
+                // O pulo do gato: Aqui somamos o PESO DO TILE ao custo do caminho
+                int custoMovimentoAteVizinho = (int)currentNode.gCost + ObterDistanciaManhattan(currentNode, vizinho) + vizinho.movementCost;
+
+                if (custoMovimentoAteVizinho < vizinho.gCost || !openSet.Contains(vizinho))
+                {
+                    vizinho.gCost = custoMovimentoAteVizinho;
+                    vizinho.hCost = ObterDistanciaManhattan(vizinho, targetNode);
+                    vizinho.parent = currentNode; // Migalha de pão
+
+                    if (!openSet.Contains(vizinho))
+                        openSet.Add(vizinho);
+                }
+            }
+        }
+
+        return null; // Não encontrou nenhum caminho possível para este ouro
+    }
+
+    // Heurística de distância para grids de 4 direções (Manhattan Distance)
+    private int ObterDistanciaManhattan(Node nodeA, Node nodeB)
+    {
+        int dstX = Mathf.Abs(nodeA.gridX - nodeB.gridX);
+        int dstY = Mathf.Abs(nodeA.gridY - nodeB.gridY);
+        return dstX + dstY;
+    }
+
+    // Constrói a lista do caminho final
+    private List<Node> RetornarCaminhoCalculado(Node inicio, Node alvo)
+    {
+        List<Node> caminho = new List<Node>();
         Node atual = alvo;
 
-        // Vai voltando pelos pais até chegar no início
         while (atual != inicio)
         {
-            caminhoParaOOuro.Add(atual);
+            caminho.Add(atual);
             atual = atual.parent;
         }
 
-        // Como adicionamos do ouro para o mineiro, a lista está invertida. 
-        // Invertemos para que o índice 0 seja o próximo passo do mineiro.
-        caminhoParaOOuro.Reverse(); 
-        
-        Debug.Log("Ouro encontrado! Passos até ele: " + caminhoParaOOuro.Count);
+        caminho.Reverse();
+        return caminho;
     }
-
-    // Transforma um Node da matriz em uma posição Vector3 real no mundo
-    
+        // Transforma um Node da matriz em uma posição Vector3 real no mundo
+        
 
 }

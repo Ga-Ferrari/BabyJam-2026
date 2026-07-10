@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: OuroFalso
   m_EditorClassIdentifier: Assembly-CSharp::DadosDoObstaculo
   nomeDoObstaculo: Ouro Falso
-  icone: {fileID: -561077583, guid: 9461a6c4e4e3a8a4bb846692e584db45, type: 3}
-  quantidade: 0
+  icone: {fileID: -2080460651, guid: f96c4f2ea485dba4a953584f9b92236c, type: 3}
   tipoDeMapaAlvo: 3
-  tileAsset: {fileID: 11400000, guid: ac4d76c00a1c3644c98eb6b0d52ec57b, type: 2}
+  tileAsset: {fileID: 11400000, guid: a7fa07dcc64978449848284e459f523e, type: 2}
