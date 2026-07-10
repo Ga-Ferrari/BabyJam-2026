@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3842284534023868416}
   - component: {fileID: 8899192710857279240}
   - component: {fileID: 9177250032687944691}
+  - component: {fileID: 196026587472907747}
   m_Layer: 5
   m_Name: ObstaculoBtn
   m_TagString: Untagged
@@ -35,8 +36,8 @@ RectTransform:
   - {fileID: 772142809884387429}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 160, y: 160}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -137,6 +138,19 @@ MonoBehaviour:
   obstaculoACriar:
     obstaculo: {fileID: 0}
     quantidade: 0
+  selecionado: 0
+--- !u!225 &196026587472907747
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4705541876926777387}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &7814850895599315837
 GameObject:
   m_ObjectHideFlags: 0
@@ -149,7 +163,7 @@ GameObject:
   - component: {fileID: 1760045938443664583}
   - component: {fileID: 493118657070066865}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TextoQtd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -169,11 +183,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 5739575809550745791}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: -5, y: -100.2}
+  m_SizeDelta: {x: 160, y: 160}
+  m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &1760045938443664583
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -211,8 +225,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
-  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

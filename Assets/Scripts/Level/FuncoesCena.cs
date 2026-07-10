@@ -11,6 +11,7 @@ public class FuncoesCena : MonoBehaviour
     [SerializeField] private CinemachineVirtualCamera camera;
     [SerializeField] private GameObject MenuPerder;
     private SistemaDeConstrucao sistemaDeConstrucao;
+    private bool iniciou = false;
     private MapGrid map;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -22,8 +23,7 @@ public class FuncoesCena : MonoBehaviour
 
     public void PlayTheGame()
     {
-        // Em vez de rodar tudo de uma vez, iniciamos a sequência de eventos
-        StartCoroutine(SequenciaDeInicio());
+        if(!iniciou) StartCoroutine(SequenciaDeInicio());
     }
 
     private IEnumerator SequenciaDeInicio()
@@ -37,14 +37,16 @@ public class FuncoesCena : MonoBehaviour
         yield return null;
         mineiro.setGrid(map);
         mineiro.AcharOuroMaisProximo();
+        iniciou = true;
     }
 
     public void MineiroChegou()
     {
         if (sistemaDeConstrucao.tileMapTemTileAt(TipoTilemap.OuroFalso, mineiro.destinoAtual))
         {
-            sistemaDeConstrucao.removerTile(TipoTilemap.OuroFalso,mineiro.transform.position);
+            sistemaDeConstrucao.removerTile(TipoTilemap.OuroFalso,mineiro.destinoAtual);
             map.InicializarGrid();
+
             mineiro.AcharOuroMaisProximo();
         }
         if (sistemaDeConstrucao.tileMapTemTileAt(TipoTilemap.Ouro, mineiro.destinoAtual))

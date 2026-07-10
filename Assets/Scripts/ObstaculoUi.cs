@@ -10,9 +10,11 @@ public class ObstaculoUi : MonoBehaviour
     public obstaculoslevel obstaculoACriar; 
     private CanvasGroup canvasGroup;
     TextMeshProUGUI textoQuantidade;
+    public bool selecionado=false;
     
     void Start()
     {
+        selecionado = false;
         Image imagemDoBotao = GetComponent<Image>();
         imagemDoBotao.sprite = obstaculoACriar.obstaculo.icone;
 
@@ -51,6 +53,24 @@ public class ObstaculoUi : MonoBehaviour
         canvasGroup.alpha = 1f;          // Torna visível novamente
         canvasGroup.interactable = true;   // Ativa os cliques
         canvasGroup.blocksRaycasts = true; // Bloqueia o mouse para poder clicar
+    }
+
+    public void Desselecionar()
+    {
+        Image imagemDoBotao = GetComponent<Image>();
+        Color corDaImagem = imagemDoBotao.color;
+        corDaImagem.a = 1f;
+        imagemDoBotao.color = corDaImagem;
+        selecionado = false;
+    }
+
+    public void Selecionar()
+    {
+        Image imagemDoBotao = GetComponent<Image>();
+        Color corDaImagem = imagemDoBotao.color;
+        corDaImagem.a = 0.5f;
+        imagemDoBotao.color = corDaImagem;
+        selecionado = true;
     }
 
 

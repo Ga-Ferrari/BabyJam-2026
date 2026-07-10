@@ -110,6 +110,29 @@ public class SistemaDeConstrucao : MonoBehaviour
                 }
             }
         }
+
+        if(tabelaDeMapas.TryGetValue(TipoTilemap.OuroFalso,out Tilemap t))
+        {
+            foreach (Vector3Int posicao in t.cellBounds.allPositionsWithin)
+                {
+                    if (t.HasTile(posicao))
+                    {
+                        Debug.Log("Bloqueou parede");
+                        mapaProibidoPosicionar.SetTile(posicao,obstaculoNaoPosicionavel.tileAsset);
+                    }
+                }
+        }
+        if(tabelaDeMapas.TryGetValue(TipoTilemap.ObstaculoLama,out Tilemap ol))
+        {
+            foreach (Vector3Int posicao in ol.cellBounds.allPositionsWithin)
+                {
+                    if (ol.HasTile(posicao))
+                    {
+                        Debug.Log("Bloqueou parede");
+                        mapaProibidoPosicionar.SetTile(posicao,obstaculoNaoPosicionavel.tileAsset);
+                    }
+                }
+        }
         
     }
 
@@ -142,8 +165,13 @@ public class SistemaDeConstrucao : MonoBehaviour
         Vector3Int coordenadaPlayer = mapaPosicionadoPeloPlayer.WorldToCell(posicaoMouseMundo);
         Vector3Int coordenadaNaoPode = mapaProibidoPosicionar.WorldToCell(posicaoMouseMundo);
 
+        if(tabelaDeMapas.TryGetValue(TipoTilemap.Fundo,out Tilemap t))
+        {
+            if(!t.HasTile(coordenadaPlayer))return;       
+        }
         if (!mapaProibidoPosicionar.HasTile(coordenadaNaoPode))
         {
+            
             if (mapaPosicionadoPeloPlayer.HasTile(coordenadaPlayer))
             {
                 RemoverTileDoMapa(posicaoMouseMundo);
@@ -157,8 +185,6 @@ public class SistemaDeConstrucao : MonoBehaviour
                 obstaculoSelecionado = null; // Deseleciona se acabar
             }
         }
-                
-        
     }
                 
     public void removerTile(TipoTilemap tipo,Vector3 posicao)

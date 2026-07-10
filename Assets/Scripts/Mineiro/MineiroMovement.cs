@@ -67,7 +67,8 @@ public class MineiroMovement : MonoBehaviour
         
         if(direcaoAtual!= 0)
         {
-            transform.localScale = new Vector2(direcaoAtual,1);
+            if(direcaoAtual>0&&transform.localScale.x<0||direcaoAtual<0&&transform.localScale.x>0)
+                transform.localScale *= new Vector2(-1,1);
         }
     }
 
@@ -112,9 +113,9 @@ public class MineiroMovement : MonoBehaviour
     private void ChegouDestino()
     {
         Debug.Log("Cheguei no destino final!");
-        AoChegarNoDestino?.Invoke();
-        animator.SetBool("Andando",false);
         temCaminho = false;
+        animator.SetBool("Andando",false);
+        AoChegarNoDestino?.Invoke();
         // Aqui você pode colocar a lógica para pegar o ouro, tocar animação, etc.
     }
 
@@ -139,12 +140,17 @@ public class MineiroMovement : MonoBehaviour
 
     public bool AcharOuroMaisProximo()
     {
+        ultimaPosicao = transform.position;
+        destinoAtual = transform.position;
         temCaminho = true;
         List<Node> todosOurosGenerico = new List<Node>();
         todosOurosGenerico.AddRange(mapa.TodosOsOurosReais);
         todosOurosGenerico.AddRange(mapa.TodosOsOurosFalsos);
-        if (mapa == null || mapa.grid == null || (mapa.TodosOsOurosFalsos.Count == 0&&mapa.TodosOsOurosReais.Count == 0)) 
-        return false;
+        if (mapa == null || mapa.grid == null || (mapa.TodosOsOurosFalsos.Count == 0&&mapa.TodosOsOurosReais.Count == 0))
+        {
+            Debug.Log("Null");
+            return false; 
+        }
 
         Vector3Int pos_tile_atual = mapa.chaoTilemap.WorldToCell(transform.position);
         int startX = pos_tile_atual.x - mapa.mapaBounds.xMin;
@@ -179,6 +185,7 @@ public class MineiroMovement : MonoBehaviour
         // Se achamos pelo menos um caminho válido
         if (melhorCaminhoEncontrado != null)
         {
+            temCaminho = true;
             caminhoParaOOuro = melhorCaminhoEncontrado;
             Debug.Log($"Melhor ouro escolhido! Passos: {caminhoParaOOuro.Count} | Custo Total: {menorCustoEncontrado}");
             return true;
