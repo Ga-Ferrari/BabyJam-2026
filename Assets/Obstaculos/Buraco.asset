@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8bd80eb17f3145743b211897cd08d38d, type: 3}
-  m_Name: ProibidoPosicionar
+  m_Name: Buraco
   m_EditorClassIdentifier: Assembly-CSharp::DadosDoObstaculo
-  nomeDoObstaculo: Proibido Posicionar
-  icone: {fileID: -783232345, guid: 06ce4cea15f3d4148a8d837d3b66760b, type: 3}
-  tipoDeMapaAlvo: 4
-  tileAsset: {fileID: 11400000, guid: 4171dc81bd9ae3d41b0c3bdd9a624d02, type: 2}
+  nomeDoObstaculo: Buraco
+  icone: {fileID: 1659283568, guid: 1f484a8ee53906e47a8b8ed27ed42ca9, type: 3}
+  tipoDeMapaAlvo: 1
+  tileAsset: {fileID: 11400000, guid: 87a3b9146136f4f4b87cdb846a508c6e, type: 2}

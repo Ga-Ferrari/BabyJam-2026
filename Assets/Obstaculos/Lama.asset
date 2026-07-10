@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8bd80eb17f3145743b211897cd08d38d, type: 3}
-  m_Name: ProibidoPosicionar
+  m_Name: Lama
   m_EditorClassIdentifier: Assembly-CSharp::DadosDoObstaculo
-  nomeDoObstaculo: Proibido Posicionar
-  icone: {fileID: -783232345, guid: 06ce4cea15f3d4148a8d837d3b66760b, type: 3}
-  tipoDeMapaAlvo: 4
-  tileAsset: {fileID: 11400000, guid: 4171dc81bd9ae3d41b0c3bdd9a624d02, type: 2}
+  nomeDoObstaculo: Lama
+  icone: {fileID: 1807615729, guid: e17a4b0e6cfce5b40ad69137627ceeb7, type: 3}
+  tipoDeMapaAlvo: 6
+  tileAsset: {fileID: 11400000, guid: c23bef0051b254f42b7e017d6ca1a6b5, type: 2}

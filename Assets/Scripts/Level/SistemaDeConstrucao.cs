@@ -20,7 +20,7 @@ public class SistemaDeConstrucao : MonoBehaviour
     private Tilemap mapaPosicionadoPeloPlayer;
     private Dictionary<Vector3Int,obstaculoslevel> obstaculoPosicionado = new Dictionary<Vector3Int, obstaculoslevel>();
 
-    private Dictionary<TipoTilemap, Tilemap> tabelaDeMapas = new Dictionary<TipoTilemap, Tilemap>();
+    public Dictionary<TipoTilemap, Tilemap> tabelaDeMapas = new Dictionary<TipoTilemap, Tilemap>();
 
 
     
@@ -104,6 +104,7 @@ public class SistemaDeConstrucao : MonoBehaviour
                 {
                     if (mapaParede.HasTile(posicao))
                     {
+                        Debug.Log("Bloqueou parede");
                         mapaProibidoPosicionar.SetTile(posicao,obstaculoNaoPosicionavel.tileAsset);
                     }
                 }
