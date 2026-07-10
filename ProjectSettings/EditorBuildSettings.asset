@@ -6,7 +6,13 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Sc_MainMenu.unity
+    guid: 5e421f10f9bc4d34e929de4d30ed014b
+  - enabled: 0
     path: Assets/Scenes/Teste_GM.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 1
+    path: Assets/Scenes/cenaMeshTeste.unity
+    guid: 8eb091bd02c809d4dba95b5a9a32b122
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
