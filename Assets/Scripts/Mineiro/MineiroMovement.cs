@@ -20,6 +20,7 @@ public class MineiroMovement : MonoBehaviour
     public List<Node> caminhoParaOOuro = new List<Node>();
     
     public UnityEvent AoChegarNoDestino;
+    public UnityEvent AndouTile;
 
 
     void Start()
@@ -57,7 +58,8 @@ public class MineiroMovement : MonoBehaviour
     {
         // 1. Pega o próximo destino
         Node proximoNo = caminhoParaOOuro[0];
-        
+
+        AndouTile?.Invoke();
         // 2. Remove da lista para não andarmos para o mesmo lugar duas vezes
         caminhoParaOOuro.RemoveAt(0);
 

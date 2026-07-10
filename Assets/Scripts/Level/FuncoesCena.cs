@@ -9,6 +9,7 @@ public class FuncoesCena : MonoBehaviour
 
     [SerializeField]private MineiroMovement mineiro;
     [SerializeField] private CinemachineVirtualCamera camera;
+    [SerializeField] private GameObject MenuPerder;
     private SistemaDeConstrucao sistemaDeConstrucao;
     private MapGrid map;
 
@@ -45,17 +46,30 @@ public class FuncoesCena : MonoBehaviour
             sistemaDeConstrucao.removerTile(TipoTilemap.OuroFalso,mineiro.transform.position);
             map.InicializarGrid();
             mineiro.AcharOuroMaisProximo();
-            Debug.Log("Tentando ir para o proximo lugar");
         }
         if (sistemaDeConstrucao.tileMapTemTileAt(TipoTilemap.Ouro, mineiro.destinoAtual))
         {
-            Debug.Log("Você perdeu");
+            Perdeu();
         }
+    }
+
+    private void Perdeu()
+    {
+        CanvasGroup canva = MenuPerder.GetComponent<CanvasGroup>();
+        canva.alpha = 1f;
+        canva.interactable = false;  // Impede que o botão reaja a cliques
+        canva.blocksRaycasts = false;// Faz o clique do mouse "atravessar" o botão
+        Time.timeScale = 0;
     }
 
     public void timeUnfreeze()
     {
         Time.timeScale = 1;
+    }
+
+    public void Ganhou()
+    {
+        Time.timeScale = 0;
     }
 
 }
