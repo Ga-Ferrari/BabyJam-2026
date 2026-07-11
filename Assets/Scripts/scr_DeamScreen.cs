@@ -1,16 +1,20 @@
+using Assets.Core;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
 public class scr_DeamScreen : MonoBehaviour
 {
+    [SerializeField] private string tryAgainSceneName;
+    [SerializeField] private string mainMenuSceneName;
+
     public void TryAgain()
     {
-        SceneManager.LoadSceneAsync(1);
+        TransitionManager.Instance.LoadScene(tryAgainSceneName);
     }
 
     public void MainMenu()
     {
-        SceneManager.LoadSceneAsync(0);
+        TransitionManager.Instance.LoadScene(mainMenuSceneName);
     }
 }

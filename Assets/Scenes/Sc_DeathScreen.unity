@@ -304,6 +304,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45ee434a2c14b5544bc369fab97f266e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  tryAgainSceneName: cenaTeste1
+  mainMenuSceneName: sc_MainMenu
 --- !u!114 &1751057750
 MonoBehaviour:
   m_ObjectHideFlags: 0
