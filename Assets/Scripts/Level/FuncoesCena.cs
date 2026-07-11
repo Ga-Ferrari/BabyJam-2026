@@ -3,13 +3,15 @@ using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
 using Cinemachine;
+using Assets.Core;
 
 public class FuncoesCena : MonoBehaviour
 {
 
-    [SerializeField]private MineiroMovement mineiro;
+    [SerializeField] private MineiroMovement mineiro;
     [SerializeField] private CinemachineVirtualCamera camera;
     [SerializeField] private GameObject MenuPerder;
+    [SerializeField] private string defeatSceneName;
     private SistemaDeConstrucao sistemaDeConstrucao;
     private bool iniciou = false;
     private MapGrid map;
@@ -26,7 +28,7 @@ public class FuncoesCena : MonoBehaviour
 
     public void PlayTheGame()
     {
-        if(!iniciou) StartCoroutine(SequenciaDeInicio());
+        if (!iniciou) StartCoroutine(SequenciaDeInicio());
     }
 
     private IEnumerator SequenciaDeInicio()
@@ -45,28 +47,32 @@ public class FuncoesCena : MonoBehaviour
 
     public void MineiroChegou()
     {
-        if (sistemaDeConstrucao.tileMapTemTileAt(TipoTilemap.OuroFalso, mineiro.destinoAtual))
-        {
-            sistemaDeConstrucao.removerTile(TipoTilemap.OuroFalso,mineiro.destinoAtual);
-            map.InicializarGrid();
+        // if (sistemaDeConstrucao.tileMapTemTileAt(TipoTilemap.OuroFalso, mineiro.destinoAtual))
+        // {
+        //     sistemaDeConstrucao.removerTile(TipoTilemap.OuroFalso, mineiro.destinoAtual);
+        //     map.InicializarGrid();
 
-            mineiro.AcharOuroMaisProximo();
-        }
-        CanvasGroup canva = MenuPerder.GetComponent<CanvasGroup>();
-        loseCanvas.SetActive(true);
+        //     mineiro.AcharOuroMaisProximo();
+        //     return;
+        // }
+
+        // CanvasGroup canva = MenuPerder.GetComponent<CanvasGroup>();
+        // loseCanvas.SetActive(true);
 
 
-        CanvasGroup meuCanvasGroup = MenuPerder.GetComponent<CanvasGroup>();
+        // CanvasGroup meuCanvasGroup = MenuPerder.GetComponent<CanvasGroup>();
 
-        if (meuCanvasGroup != null)
-        {
-            meuCanvasGroup.alpha = 1f;
-            meuCanvasGroup.interactable = true;
-            meuCanvasGroup.blocksRaycasts = true;
-        }
+        // if (meuCanvasGroup != null)
+        // {
+        //     meuCanvasGroup.alpha = 1f;
+        //     meuCanvasGroup.interactable = true;
+        //     meuCanvasGroup.blocksRaycasts = true;
+        // }
+
+        TransitionManager.Instance.LoadScene(defeatSceneName);
     }
 
-  
+
 
     public void timeUnfreeze()
     {

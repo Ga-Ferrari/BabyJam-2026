@@ -40,6 +40,12 @@ namespace MenuSystem.Buttons
             OnButtonSelected -= RespondToButtonSelected;
         }
 
+        private void Start()
+        {
+            if (audioManager == null)
+                audioManager = AudioManager.Instance;
+        }
+
         //Detecta se outro botão foi selecionado e se desativa
         private void RespondToButtonSelected(Button otherButton)
         {

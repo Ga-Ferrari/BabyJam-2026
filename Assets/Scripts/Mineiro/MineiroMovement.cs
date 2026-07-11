@@ -19,18 +19,20 @@ public class MineiroMovement : MonoBehaviour
     public MapGrid mapa;
 
     public List<Node> caminhoParaOOuro = new List<Node>();
-    
+
     public UnityEvent AoChegarNoDestino;
     public UnityEvent<int> AndouTile;
 
-    [SerializeField]private SistemaDeConstrucao sistemaDeConstrucao;
+    [SerializeField] private SistemaDeConstrucao sistemaDeConstrucao;
     private Animator animator;
-    private bool temCaminho=false;
+    private bool temCaminho = false;
+
+    [SerializeField] private FuncoesCena funcoesCena;
 
     void Start()
     {
         animator = GetComponent<Animator>();
-        animator.SetBool("Andando",false);
+        animator.SetBool("Andando", false);
         ultimaPosicao = transform.position;
         destinoAtual = transform.position;
         tempoEntrePassos = GameManager.Instance.VelocidadeMineiroBase;
@@ -41,7 +43,7 @@ public class MineiroMovement : MonoBehaviour
         // Se temos um caminho a seguir, o relógio começa a contar
         if (temCaminho)
         {
-            animator.SetBool("Andando",true);
+            animator.SetBool("Andando", true);
             ArrumarSprite();
             movimentoTimer += Time.deltaTime;
 
@@ -53,11 +55,11 @@ public class MineiroMovement : MonoBehaviour
                 // Zera o relógio para o próximo passo
                 movimentoTimer = 0f; 
             }*/
-            transform.position= math.lerp(ultimaPosicao,destinoAtual,movimentoTimer/tempoEntrePassos);
-            if(movimentoTimer >= tempoEntrePassos)
+            transform.position = math.lerp(ultimaPosicao, destinoAtual, movimentoTimer / tempoEntrePassos);
+            if (movimentoTimer >= tempoEntrePassos)
             {
                 DarUmPasso();
-                movimentoTimer =0;
+                movimentoTimer = 0;
             }
 
         }
@@ -65,12 +67,12 @@ public class MineiroMovement : MonoBehaviour
 
     private void ArrumarSprite()
     {
-        int direcaoAtual = Math.Sign(destinoAtual.x-ultimaPosicao.x);
-        
-        if(direcaoAtual!= 0)
+        int direcaoAtual = Math.Sign(destinoAtual.x - ultimaPosicao.x);
+
+        if (direcaoAtual != 0)
         {
-            if(direcaoAtual>0&&transform.localScale.x<0||direcaoAtual<0&&transform.localScale.x>0)
-                transform.localScale *= new Vector2(-1,1);
+            if (direcaoAtual > 0 && transform.localScale.x < 0 || direcaoAtual < 0 && transform.localScale.x > 0)
+                transform.localScale *= new Vector2(-1, 1);
         }
     }
 
@@ -93,13 +95,13 @@ public class MineiroMovement : MonoBehaviour
         transform.position = ultimaPosicao;
         destinoAtual = mapa.ObterPosicaoMundo(proximoNo);
         ResolverEfeitoTile();
-        
-        
+
+
     }
 
     private void ResolverEfeitoTile()
     {
-        if (sistemaDeConstrucao.tileMapTemTileAt(TipoTilemap.ObstaculoLama,ultimaPosicao))
+        if (sistemaDeConstrucao.tileMapTemTileAt(TipoTilemap.ObstaculoLama, ultimaPosicao))
         {
             tempoEntrePassos = GameManager.Instance.VelocidadeMineiroBase * GameManager.Instance.LamaSlowDown;
             custoMovimentoAtual = GameManager.Instance.LamaSlowDown;
@@ -116,17 +118,28 @@ public class MineiroMovement : MonoBehaviour
     {
         Debug.Log("Cheguei no destino final!");
         temCaminho = false;
-        animator.SetBool("Andando",false);
-       // AoChegarNoDestino?.Invoke();
+        animator.SetBool("Andando", false);
+        // AoChegarNoDestino?.Invoke();
         // Aqui você pode colocar a lógica para pegar o ouro, tocar animação, etc.
 
-         
+        if (sistemaDeConstrucao.tileMapTemTileAt(TipoTilemap.OuroFalso, destinoAtual))
+        {
+            sistemaDeConstrucao.removerTile(TipoTilemap.OuroFalso, destinoAtual);
+            mapa.InicializarGrid();
+            AcharOuroMaisProximo();
+            return;
+        }
+        if (sistemaDeConstrucao.tileMapTemTileAt(TipoTilemap.Ouro, destinoAtual))
+        {
+            funcoesCena.MineiroChegou();
+            return;
+        }
     }
 
 
 
     private void ResetarGridAEstrela()
-    {   
+    {
         // Percorre todos os nós do grid e reseta os valores do A*
         for (int x = 0; x < mapa.mapaBounds.size.x; x++)
         {
@@ -151,10 +164,10 @@ public class MineiroMovement : MonoBehaviour
         List<Node> todosOurosGenerico = new List<Node>();
         todosOurosGenerico.AddRange(mapa.TodosOsOurosReais);
         todosOurosGenerico.AddRange(mapa.TodosOsOurosFalsos);
-        if (mapa == null || mapa.grid == null || (mapa.TodosOsOurosFalsos.Count == 0&&mapa.TodosOsOurosReais.Count == 0))
+        if (mapa == null || mapa.grid == null || (mapa.TodosOsOurosFalsos.Count == 0 && mapa.TodosOsOurosReais.Count == 0))
         {
             Debug.Log("Null");
-            return false; 
+            return false;
         }
 
         Vector3Int pos_tile_atual = mapa.chaoTilemap.WorldToCell(transform.position);
@@ -207,17 +220,17 @@ public class MineiroMovement : MonoBehaviour
         int height = mapa.mapaBounds.size.y;
 
         // Direita
-        if (node.gridX + 1 < width) 
-                vizinhos.Add(mapa.grid[node.gridX + 1, node.gridY]);
+        if (node.gridX + 1 < width)
+            vizinhos.Add(mapa.grid[node.gridX + 1, node.gridY]);
         // Esquerda
-        if (node.gridX - 1 >= 0) 
-                vizinhos.Add(mapa.grid[node.gridX - 1, node.gridY]);
+        if (node.gridX - 1 >= 0)
+            vizinhos.Add(mapa.grid[node.gridX - 1, node.gridY]);
         // Cima
-        if (node.gridY + 1 < height) 
-                vizinhos.Add(mapa.grid[node.gridX, node.gridY + 1]);
+        if (node.gridY + 1 < height)
+            vizinhos.Add(mapa.grid[node.gridX, node.gridY + 1]);
         // Baixo
-        if (node.gridY - 1 >= 0) 
-                vizinhos.Add(mapa.grid[node.gridX, node.gridY - 1]);
+        if (node.gridY - 1 >= 0)
+            vizinhos.Add(mapa.grid[node.gridX, node.gridY - 1]);
 
         return vizinhos;
     }
@@ -233,7 +246,7 @@ public class MineiroMovement : MonoBehaviour
         ResetarGridAEstrela();
         startNode.gCost = 0;   // O custo inicial deve ser 0
 
-        
+
         List<Node> openSet = new List<Node>(); // Nós a serem avaliados
         HashSet<Node> closedSet = new HashSet<Node>(); // Nós já avaliados
 
@@ -308,7 +321,7 @@ public class MineiroMovement : MonoBehaviour
         caminho.Reverse();
         return caminho;
     }
-        // Transforma um Node da matriz em uma posição Vector3 real no mundo
-        
+    // Transforma um Node da matriz em uma posição Vector3 real no mundo
+
 
 }

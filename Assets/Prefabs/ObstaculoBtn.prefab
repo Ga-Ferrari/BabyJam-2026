@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8899192710857279240}
   - component: {fileID: 9177250032687944691}
   - component: {fileID: 196026587472907747}
+  - component: {fileID: 1592563261798990986}
   m_Layer: 5
   m_Name: ObstaculoBtn
   m_TagString: Untagged
@@ -151,6 +152,20 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &1592563261798990986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4705541876926777387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbd17cadf7a329a40b3624bc7197c13e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MenuSystem.Buttons.ButtonBehaviour
+  buttonEffectsData: {fileID: 11400000, guid: c1f7b6c263237194683a94b904ec8951, type: 2}
+  audioManager: {fileID: 0}
 --- !u!1 &7814850895599315837
 GameObject:
   m_ObjectHideFlags: 0
