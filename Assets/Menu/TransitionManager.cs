@@ -1,0 +1,69 @@
+using System.Collections;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using DG.Tweening;
+
+namespace Assets.Core
+{
+    public class TransitionManager : MonoBehaviour
+    {
+        public static TransitionManager Instance { get; private set; }
+
+        [Header("Configurações Visuais")]
+        [SerializeField] private CanvasGroup transitionCanvasGroup;
+        [SerializeField] private float fadeDuration = 0.5f;
+
+        private bool isTransitioning = false;
+
+        private void Awake()
+        {
+            if (Instance == null)
+            {
+                Instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+                return;
+            }
+
+            transitionCanvasGroup.alpha = 0f;
+            transitionCanvasGroup.blocksRaycasts = false;
+        }
+
+        private void Start()
+        {
+            transitionCanvasGroup.alpha = 1f;
+            transitionCanvasGroup.DOFade(0f, fadeDuration).SetUpdate(true);
+        }
+
+        public void LoadScene(string sceneName)
+        {
+            if (isTransitioning) return;
+            StartCoroutine(TransitionRoutine(sceneName));
+        }
+
+        private IEnumerator TransitionRoutine(string sceneName = "")
+        {
+            isTransitioning = true;
+            transitionCanvasGroup.blocksRaycasts = true;
+
+            yield return transitionCanvasGroup.DOFade(1f, fadeDuration).SetUpdate(true).WaitForCompletion();
+
+            Time.timeScale = 1f;
+
+            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
+
+            yield return new WaitUntil(() => asyncLoad.isDone);
+
+            yield return null;
+
+            yield return transitionCanvasGroup.DOFade(0f, fadeDuration).SetUpdate(true).WaitForCompletion();
+
+            transitionCanvasGroup.blocksRaycasts = false;
+            isTransitioning = false;
+        }
+    }
+}
