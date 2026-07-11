@@ -3,13 +3,15 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Events;
 using System;
+using UnityEngine.SceneManagement;
 
 public class MineiroMovement : MonoBehaviour
 {
     [Header("Configurações de Movimento")]
     private int custoMovimentoAtual;
-    private float tempoEntrePassos; 
-    
+    private float tempoEntrePassos;
+
+
     private float movimentoTimer = 0.0f;
     private Vector3 ultimaPosicao;
     public Vector3 destinoAtual;
@@ -115,9 +117,12 @@ public class MineiroMovement : MonoBehaviour
         Debug.Log("Cheguei no destino final!");
         temCaminho = false;
         animator.SetBool("Andando",false);
-        AoChegarNoDestino?.Invoke();
+       // AoChegarNoDestino?.Invoke();
         // Aqui você pode colocar a lógica para pegar o ouro, tocar animação, etc.
+
+         
     }
+
 
 
     private void ResetarGridAEstrela()

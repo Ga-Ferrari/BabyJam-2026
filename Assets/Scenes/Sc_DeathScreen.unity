@@ -446,7 +446,7 @@ PrefabInstance:
       objectReference: {fileID: 1751057749}
     - target: {fileID: 4479571372745619594, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}
       propertyPath: m_Name
-      value: Canvas
+      value: UiTelaDeMorte
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

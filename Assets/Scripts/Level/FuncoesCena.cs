@@ -14,6 +14,9 @@ public class FuncoesCena : MonoBehaviour
     private bool iniciou = false;
     private MapGrid map;
 
+    public GameObject loseCanvas;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -52,16 +55,19 @@ public class FuncoesCena : MonoBehaviour
         if (sistemaDeConstrucao.tileMapTemTileAt(TipoTilemap.Ouro, mineiro.destinoAtual))
         {
             Perdeu();
+            
         }
     }
 
     private void Perdeu()
     {
-        CanvasGroup canva = MenuPerder.GetComponent<CanvasGroup>();
-        canva.alpha = 1f;
-        canva.interactable = false;  // Impede que o botão reaja a cliques
-        canva.blocksRaycasts = false;// Faz o clique do mouse "atravessar" o botão
-        Time.timeScale = 0;
+       // CanvasGroup canva = MenuPerder.GetComponent<CanvasGroup>();
+       // canva.alpha = 1f;
+       // canva.interactable = false;  // Impede que o botão reaja a cliques
+       // canva.blocksRaycasts = false;// Faz o clique do mouse "atravessar" o botão
+       // Time.timeScale = 0;
+        loseCanvas.SetActive(true);
+
     }
 
     public void timeUnfreeze()
@@ -71,7 +77,7 @@ public class FuncoesCena : MonoBehaviour
 
     public void Ganhou()
     {
-        Time.timeScale = 0;
+       // Time.timeScale = 0;
     }
 
 }
