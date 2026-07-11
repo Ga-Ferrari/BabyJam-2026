@@ -1,2 +1,15 @@
 fileFormatVersion: 2
 guid: 4f0b5a9c658539c4ab5eba38b2513197
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - mineiro: {instanceID: 0}
+  - camera: {instanceID: 0}
+  - MenuPerder: {instanceID: 0}
+  - loseCanvas: {fileID: 4479571372745619594, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
