@@ -52,23 +52,21 @@ public class FuncoesCena : MonoBehaviour
 
             mineiro.AcharOuroMaisProximo();
         }
-        if (sistemaDeConstrucao.tileMapTemTileAt(TipoTilemap.Ouro, mineiro.destinoAtual))
+        CanvasGroup canva = MenuPerder.GetComponent<CanvasGroup>();
+        loseCanvas.SetActive(true);
+
+
+        CanvasGroup meuCanvasGroup = MenuPerder.GetComponent<CanvasGroup>();
+
+        if (meuCanvasGroup != null)
         {
-            Perdeu();
-            
+            meuCanvasGroup.alpha = 1f;
+            meuCanvasGroup.interactable = true;
+            meuCanvasGroup.blocksRaycasts = true;
         }
     }
 
-    private void Perdeu()
-    {
-       // CanvasGroup canva = MenuPerder.GetComponent<CanvasGroup>();
-       // canva.alpha = 1f;
-       // canva.interactable = false;  // Impede que o botão reaja a cliques
-       // canva.blocksRaycasts = false;// Faz o clique do mouse "atravessar" o botão
-       // Time.timeScale = 0;
-        loseCanvas.SetActive(true);
-
-    }
+  
 
     public void timeUnfreeze()
     {
@@ -77,7 +75,7 @@ public class FuncoesCena : MonoBehaviour
 
     public void Ganhou()
     {
-       // Time.timeScale = 0;
+        Time.timeScale = 0;
     }
 
 }
