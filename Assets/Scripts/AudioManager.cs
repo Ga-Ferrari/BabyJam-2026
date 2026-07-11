@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
 public enum Audios
 {
     PosicionarBloco,
@@ -12,14 +10,16 @@ public enum Audios
 
 }
 
-
 public class AudioManager : MonoBehaviour
 {
-    
-    public Dictionary<Audios,AudioClip> GlobalAudio;
-    public List<AudioClip> audios; 
-    
+
+    public Dictionary<Audios, AudioClip> GlobalAudio;
+    public List<AudioClip> audios;
+
     public static AudioManager Instance { get; private set; }
+
+    [SerializeField] private AudioSource music;
+    [SerializeField] private AudioSource sfx;
 
     private void Awake()
     {
@@ -38,5 +38,18 @@ public class AudioManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    // Falta fazer
+    public void PlaySFX(AudioClip clip)
+    {
+        sfx.PlayOneShot(clip);
+    }
 
+    public void PlayMusic(AudioClip clip)
+    {
+        if (music.clip == clip && music.isPlaying)
+            return;
+
+        music.clip = clip;
+        music.Play();
+    }
 }
