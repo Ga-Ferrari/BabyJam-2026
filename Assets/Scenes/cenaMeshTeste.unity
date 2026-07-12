@@ -93120,6 +93120,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mobile Controls
       objectReference: {fileID: 0}
+    - target: {fileID: 2876443964726698133, guid: 7b387511b0697b144965752d3a5dcfa7, type: 3}
+      propertyPath: m_SortingOrder
+      value: 236
+      objectReference: {fileID: 0}
     - target: {fileID: 4036675854720068225, guid: 7b387511b0697b144965752d3a5dcfa7, type: 3}
       propertyPath: m_IsActive
       value: 1
