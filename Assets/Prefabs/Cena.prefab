@@ -1822,13 +1822,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3948961734435471336}
     m_Modifications:
+    - target: {fileID: 1603162901407017084, guid: 31bd6f01414245e488519d1958968ea2, type: 3}
+      propertyPath: m_Color.a
+      value: 0.50980395
+      objectReference: {fileID: 0}
     - target: {fileID: 4342215265296549079, guid: 31bd6f01414245e488519d1958968ea2, type: 3}
       propertyPath: tipoDoMapa
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4829213577944057871, guid: 31bd6f01414245e488519d1958968ea2, type: 3}
       propertyPath: m_SortingOrder
-      value: 50
+      value: 49
       objectReference: {fileID: 0}
     - target: {fileID: 5144364155938372583, guid: 31bd6f01414245e488519d1958968ea2, type: 3}
       propertyPath: m_Name

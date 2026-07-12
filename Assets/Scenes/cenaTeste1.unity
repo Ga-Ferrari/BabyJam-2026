@@ -844,11 +844,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 231863201586099649, guid: 7530040e1eb7bad4db8834a72349fa20, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 2.6900024
+      value: 2.6899414
       objectReference: {fileID: 0}
     - target: {fileID: 231863201586099649, guid: 7530040e1eb7bad4db8834a72349fa20, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -18.799988
+      value: -18.800049
       objectReference: {fileID: 0}
     - target: {fileID: 383422466918977093, guid: 7530040e1eb7bad4db8834a72349fa20, type: 3}
       propertyPath: m_AnchorMax.y
@@ -93489,10 +93489,6 @@ PrefabInstance:
     - target: {fileID: 9013545015096390988, guid: 7530040e1eb7bad4db8834a72349fa20, type: 3}
       propertyPath: AndouTile.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: decrementarPassos
-      objectReference: {fileID: 0}
-    - target: {fileID: 9014512206132195745, guid: 7530040e1eb7bad4db8834a72349fa20, type: 3}
-      propertyPath: m_Color.a
-      value: 0.50980395
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 0}

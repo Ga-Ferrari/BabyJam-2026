@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dce452e9f893b444db4fbe0c78dc75d6, type: 3}
   m_Name: ObstacleEffectsData
   m_EditorClassIdentifier: Assembly-CSharp::MenuSystem.ButtonEffectsData
-  sizeMultiplier: 1.1
+  sizeMultiplier: 1.05
   selectDuration: 0.2
-  selectEase: 18
+  selectEase: 6
   selectSFX: {fileID: 0}
   shakeStrength: 10
   vibrato: 20
