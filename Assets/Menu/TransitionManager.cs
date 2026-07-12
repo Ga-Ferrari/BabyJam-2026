@@ -6,6 +6,16 @@ using DG.Tweening;
 
 namespace Assets.Core
 {
+    public enum SceneToTransition
+    {
+        MainMenu,
+        Tutorial,
+        Level1,
+        Level2,
+        WinScreen,
+        DefeatScreen
+    }
+
     public class TransitionManager : MonoBehaviour
     {
         public static TransitionManager Instance { get; private set; }
@@ -13,7 +23,7 @@ namespace Assets.Core
         [Header("Configurações Visuais")]
         [SerializeField] private CanvasGroup transitionCanvasGroup;
         [SerializeField] private float fadeDuration = 0.5f;
-
+        public string lastGameplayScene;
         private bool isTransitioning = false;
 
         private void Awake()
@@ -39,10 +49,21 @@ namespace Assets.Core
             transitionCanvasGroup.DOFade(0f, fadeDuration).SetUpdate(true);
         }
 
-        public void LoadScene(string sceneName)
+        public void LoadScene(SceneToTransition sceneName)
         {
             if (isTransitioning) return;
-            StartCoroutine(TransitionRoutine(sceneName));
+
+            lastGameplayScene = SceneManager.GetActiveScene().name;
+
+            StartCoroutine(TransitionRoutine(sceneName.ToString()));
+        }
+
+        public void ReloadLastGameplayScene()
+        {
+            if (isTransitioning || string.IsNullOrEmpty(lastGameplayScene))
+                return;
+
+            StartCoroutine(TransitionRoutine(lastGameplayScene));
         }
 
         private IEnumerator TransitionRoutine(string sceneName = "")

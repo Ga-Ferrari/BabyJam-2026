@@ -11,7 +11,7 @@ public class FuncoesCena : MonoBehaviour
     [SerializeField] private MineiroMovement mineiro;
     [SerializeField] private CinemachineVirtualCamera camera;
     [SerializeField] private GameObject MenuPerder;
-    [SerializeField] private string defeatSceneName;
+    [SerializeField] private SceneToTransition defeatSceneName;
     private SistemaDeConstrucao sistemaDeConstrucao;
     private bool iniciou = false;
     private MapGrid map;

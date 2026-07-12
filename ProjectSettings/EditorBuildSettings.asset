@@ -6,22 +6,22 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Sc_MainMenu.unity
+    path: Assets/Scenes/MainMenu.unity
     guid: 5e421f10f9bc4d34e929de4d30ed014b
-  - enabled: 0
-    path: Assets/Scenes/Teste_GM.unity
-    guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
-    path: Assets/Scenes/cenaMeshTeste.unity
-    guid: 8eb091bd02c809d4dba95b5a9a32b122
-  - enabled: 1
-    path: Assets/Scenes/Sc_DeathScreen.unity
-    guid: 4534da6c6292dd446a2d79058647d238
-  - enabled: 1
-    path: Assets/Scenes/cenaTeste1.unity
+    path: Assets/Scenes/Tutorial.unity
     guid: 51cb5c37ef341424a9033b10c82552c5
   - enabled: 1
-    path: Assets/Scenes/winScreen.unity
+    path: Assets/Scenes/Level1.unity
+    guid: 62655927a95738744b726adc9719d6ff
+  - enabled: 1
+    path: Assets/Scenes/Level2.unity
+    guid: 2dc4b1fb24feb7542b2220dfe6ceab81
+  - enabled: 1
+    path: Assets/Scenes/WinScreen.unity
     guid: b4aad69003b40b44bb37599cd9ae4a34
+  - enabled: 1
+    path: Assets/Scenes/DefeatScreen.unity
+    guid: 4534da6c6292dd446a2d79058647d238
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

@@ -28,6 +28,7 @@ public class MineiroMovement : MonoBehaviour
     private bool temCaminho = false;
 
     [SerializeField] private FuncoesCena funcoesCena;
+    [SerializeField] private TempoLevel TempoLevel;
 
     void Start()
     {
@@ -209,6 +210,8 @@ public class MineiroMovement : MonoBehaviour
             return true;
         }
         temCaminho = false;
+        Debug.Log("nao achei cminh, perdi");
+        TempoLevel.Acabou();
 
         return false; // Nenhum ouro é alcançável
     }

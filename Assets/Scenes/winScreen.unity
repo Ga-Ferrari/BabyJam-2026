@@ -304,8 +304,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45ee434a2c14b5544bc369fab97f266e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  tryAgainSceneName: cenaTeste1
-  mainMenuSceneName: sc_MainMenu
+  mainMenuSceneName: 0
 --- !u!114 &1751057750
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -474,6 +473,10 @@ PrefabInstance:
       propertyPath: m_RenderMode
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7762993762173448489, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -194
+      objectReference: {fileID: 0}
     - target: {fileID: 7797578168959397632, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}
       propertyPath: m_UiScaleMode
       value: 1
@@ -487,7 +490,8 @@ PrefabInstance:
       value: 1080
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6278100474942221461, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}

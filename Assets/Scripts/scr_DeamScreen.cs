@@ -5,12 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class scr_DeamScreen : MonoBehaviour
 {
-    [SerializeField] private string tryAgainSceneName;
-    [SerializeField] private string mainMenuSceneName;
+    [SerializeField] private SceneToTransition mainMenuSceneName;
 
     public void TryAgain()
     {
-        TransitionManager.Instance.LoadScene(tryAgainSceneName);
+        TransitionManager.Instance.ReloadLastGameplayScene();
     }
 
     public void MainMenu()

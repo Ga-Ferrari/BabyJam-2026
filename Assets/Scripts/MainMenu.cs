@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    [SerializeField] private string gameSceneName;
+    [SerializeField] private SceneToTransition gameSceneName;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void PlayGame()

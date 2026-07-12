@@ -20,4 +20,4 @@ MonoBehaviour:
   vibrato: 20
   pressDuration: 0.1
   randomness: 90
-  pressSFX: {fileID: 8300000, guid: 481cfc469f7f69a44913f12501aef10c, type: 3}
+  pressSFX: {fileID: 0}
