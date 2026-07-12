@@ -93507,10 +93507,13 @@ PrefabInstance:
       propertyPath: AndouTile.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: decrementarPassos
       objectReference: {fileID: 0}
+<<<<<<< Updated upstream
     - target: {fileID: 9014512206132195745, guid: 7530040e1eb7bad4db8834a72349fa20, type: 3}
       propertyPath: m_Color.a
       value: 0.50980395
       objectReference: {fileID: 0}
+=======
+>>>>>>> Stashed changes
     m_RemovedComponents:
     - {fileID: 0}
     - {fileID: 0}

@@ -33,7 +33,7 @@ RectTransform:
   m_Father: {fileID: 1984256399797876474}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -890,6 +890,10 @@ MonoBehaviour:
   mineiro: {fileID: 9013545015096390988}
   camera: {fileID: 5724249654033090565}
   MenuPerder: {fileID: 0}
+<<<<<<< Updated upstream
+=======
+  defeatSceneName: 
+>>>>>>> Stashed changes
   loseCanvas: {fileID: 0}
 --- !u!114 &940669748430183888
 MonoBehaviour:
@@ -1821,6 +1825,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3948961734435471336}
     m_Modifications:
+<<<<<<< Updated upstream
+=======
+    - target: {fileID: 1603162901407017084, guid: 31bd6f01414245e488519d1958968ea2, type: 3}
+      propertyPath: m_Color.a
+      value: 0.50980395
+      objectReference: {fileID: 0}
+>>>>>>> Stashed changes
     - target: {fileID: 4342215265296549079, guid: 31bd6f01414245e488519d1958968ea2, type: 3}
       propertyPath: tipoDoMapa
       value: 4
