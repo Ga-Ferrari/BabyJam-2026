@@ -20,5 +20,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/cenaTeste1.unity
     guid: 51cb5c37ef341424a9033b10c82552c5
+  - enabled: 1
+    path: Assets/Scenes/winScreen.unity
+    guid: b4aad69003b40b44bb37599cd9ae4a34
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

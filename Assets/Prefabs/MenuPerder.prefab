@@ -528,6 +528,7 @@ GameObject:
   - component: {fileID: 3399092843339219290}
   - component: {fileID: 621528561336285413}
   - component: {fileID: 3697803827620921244}
+  - component: {fileID: 5107111597112540768}
   m_Layer: 5
   m_Name: Restart!
   m_TagString: Untagged
@@ -649,6 +650,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &5107111597112540768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6278100474942221461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbd17cadf7a329a40b3624bc7197c13e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MenuSystem.Buttons.ButtonBehaviour
+  buttonEffectsData: {fileID: 11400000, guid: be1fd0d97651a8b45a915d0d635091e8, type: 2}
+  audioManager: {fileID: 0}
 --- !u!1 &7486770358536359579
 GameObject:
   m_ObjectHideFlags: 0
@@ -661,6 +676,7 @@ GameObject:
   - component: {fileID: 438893414469159539}
   - component: {fileID: 1851357773705478320}
   - component: {fileID: 3021123240097094152}
+  - component: {fileID: 6636594577462145492}
   m_Layer: 5
   m_Name: MainMenu
   m_TagString: Untagged
@@ -782,3 +798,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &6636594577462145492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7486770358536359579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbd17cadf7a329a40b3624bc7197c13e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MenuSystem.Buttons.ButtonBehaviour
+  buttonEffectsData: {fileID: 11400000, guid: be1fd0d97651a8b45a915d0d635091e8, type: 2}
+  audioManager: {fileID: 0}
