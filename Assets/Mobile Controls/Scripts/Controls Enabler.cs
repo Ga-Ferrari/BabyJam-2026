@@ -30,25 +30,25 @@ namespace MobileControls
         {
             RuntimePlatform platform = Application.platform;
 
-            if (
-                platform == RuntimePlatform.Android ||
-                platform == RuntimePlatform.IPhonePlayer ||
-                (platform == RuntimePlatform.WebGLPlayer && Application.isMobilePlatform)
-            )
+            // if (
+            //     platform == RuntimePlatform.Android ||
+            //     platform == RuntimePlatform.IPhonePlayer ||
+            //     (platform == RuntimePlatform.WebGLPlayer && Application.isMobilePlatform)
+            // )
+            // {
+            if (usesStick)
             {
-                if (usesStick)
-                {
-                    movementStick.SetActive(true);
-                    movementButtons.SetActive(false);
-                }
-                else
-                {
-                    movementStick.SetActive(false);
-                    movementButtons.SetActive(true);
-                }
-
-                canvasObject.SetActive(true);
+                movementStick.SetActive(true);
+                movementButtons.SetActive(false);
             }
+            else
+            {
+                movementStick.SetActive(false);
+                movementButtons.SetActive(true);
+            }
+
+            canvasObject.SetActive(true);
+            // }
         }
     }
 }
