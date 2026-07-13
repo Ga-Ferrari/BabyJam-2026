@@ -172,11 +172,15 @@ public class MineiroMovement : MonoBehaviour
         }
 
         Vector3Int pos_tile_atual = mapa.chaoTilemap.WorldToCell(transform.position);
+        Debug.Log($"pos_tile_atual: {pos_tile_atual} | mapaBounds: xMin={mapa.mapaBounds.xMin}, yMin={mapa.mapaBounds.yMin}, size={mapa.mapaBounds.size}");
         int startX = pos_tile_atual.x - mapa.mapaBounds.xMin;
         int startY = pos_tile_atual.y - mapa.mapaBounds.yMin;
 
         if (startX < 0 || startX >= mapa.mapaBounds.size.x || startY < 0 || startY >= mapa.mapaBounds.size.y)
+        {
+            Debug.LogWarning($"Posição fora do grid: ({startX},{startY}) | pos_tile_atual={pos_tile_atual} | bounds={mapa.mapaBounds}");
             return false;
+        }
 
         Node startNode = mapa.grid[startX, startY];
 
@@ -186,6 +190,7 @@ public class MineiroMovement : MonoBehaviour
         // Roda o A* para cada ouro conhecido
         foreach (Node ouroNode in todosOurosGenerico)
         {
+            Debug.Log("Calculando caminho para o ouro em: " + ouroNode.gridX + ", " + ouroNode.gridY);
             List<Node> caminhoTestado = CalcularAEstrela(startNode, ouroNode);
 
             if (caminhoTestado != null && caminhoTestado.Count > 0)
@@ -246,6 +251,7 @@ public class MineiroMovement : MonoBehaviour
 
     private List<Node> CalcularAEstrela(Node startNode, Node targetNode)
     {
+        Debug.Log("Executei A");
         ResetarGridAEstrela();
         startNode.gCost = 0;   // O custo inicial deve ser 0
 

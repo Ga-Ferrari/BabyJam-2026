@@ -16,19 +16,19 @@ public class Node
     // --- 2. Variáveis exclusivas do algoritmo A* ---
     public int gCost; // Custo do caminho percorrido do início até este Node
     public int hCost; // Heurística: Distância estimada deste Node até o alvo final
-    
+
     // O Custo Total (F = G + H). O A* sempre vai escolher o Node com o menor F.
-    public int FCost 
+    public int FCost
     {
         get { return gCost + hCost; }
     }
 
     // --- 3. A "Migalha de pão" ---
-    public Node parent; 
+    public Node parent;
 
     // --- Construtor ---
     // Usado pela nossa função InicializarGrid() para criar a matriz
-    public Node(int _gridX, int _gridY, bool _isWalkable, int _movementCost,bool _temOuro)
+    public Node(int _gridX, int _gridY, bool _isWalkable, int _movementCost, bool _temOuro)
     {
         gridX = _gridX;
         gridY = _gridY;
@@ -57,6 +57,9 @@ public class MapGrid : MonoBehaviour
     {
         // 1. Define o tamanho do mapa baseado no tilemap principal (chão)
         mapaBounds = chaoTilemap.cellBounds;
+        Debug.Log($"chaoTilemap bounds: {chaoTilemap.cellBounds}");
+        Vector3Int testPos = new Vector3Int(5, -17, 0);
+        Debug.Log($"HasTile em (5,-17) no chaoTilemap? {chaoTilemap.HasTile(testPos)}");
         grid = new Node[mapaBounds.size.x, mapaBounds.size.y];
 
         // 2. Percorre as coordenadas X e Y do mapa
@@ -77,12 +80,12 @@ public class MapGrid : MonoBehaviour
                 }
 
                 // Verifica se há lama/espinhos nesta coordenada para aumentar o custo
-                if (LamaTilemap&&LamaTilemap.HasTile(posTile))
+                if (LamaTilemap && LamaTilemap.HasTile(posTile))
                 {
                     custoMovimento = GameManager.Instance.LamaSlowDown; // Caminhar aqui é 3x mais "pesado" para o A*
                 }
 
-                if (ouroTilemap.HasTile(posTile)||ouroFalsoTilemap.HasTile(posTile))
+                if (ouroTilemap.HasTile(posTile) || ouroFalsoTilemap.HasTile(posTile))
                 {
                     temOuro = true;
                 }
@@ -92,14 +95,15 @@ public class MapGrid : MonoBehaviour
                 int gridY = y - mapaBounds.yMin;
 
                 // 4. Cria o nó consolidado na memória
-                grid[gridX, gridY] = new Node(gridX, gridY, éAndavel,(int) custoMovimento,temOuro);
+                grid[gridX, gridY] = new Node(gridX, gridY, éAndavel, (int)custoMovimento, temOuro);
                 if (grid[gridX, gridY].temOuro)
                 {
-                    TodosOsOurosReais.Add(grid[gridX,gridY]);
+                    TodosOsOurosReais.Add(grid[gridX, gridY]);
+                    Debug.Log($"add grid[{gridX}{gridY}]");
                 }
                 if (grid[gridX, gridY].temOuroFalso)
                 {
-                    TodosOsOurosFalsos.Add(grid[gridX,gridY]);
+                    TodosOsOurosFalsos.Add(grid[gridX, gridY]);
                 }
             }
         }
@@ -110,7 +114,7 @@ public class MapGrid : MonoBehaviour
         // 1. Reverte o índice da matriz para a coordenada interna do Tilemap
         int tileX = node.gridX + mapaBounds.xMin;
         int tileY = node.gridY + mapaBounds.yMin;
-        
+
         Vector3Int posTile = new Vector3Int(tileX, tileY, 0);
 
         // 2. A Unity calcula automaticamente o centro físico daquele Tile no mundo

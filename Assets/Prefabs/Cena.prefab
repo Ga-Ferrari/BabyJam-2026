@@ -860,6 +860,7 @@ GameObject:
   - component: {fileID: 4277053521787712797}
   - component: {fileID: 1863597851938530970}
   - component: {fileID: 8196065588308919841}
+  - component: {fileID: 2198766030053557725}
   m_Layer: 0
   m_Name: Cena
   m_TagString: Untagged
@@ -903,7 +904,7 @@ MonoBehaviour:
   mineiro: {fileID: 9013545015096390988}
   camera: {fileID: 5724249654033090565}
   MenuPerder: {fileID: 0}
-  defeatSceneName: 0
+  defeatSceneName: 5
   loseCanvas: {fileID: 0}
 --- !u!114 &940669748430183888
 MonoBehaviour:
@@ -1162,9 +1163,22 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  nextScene: 4
+  nextScene: 3
   mineiro: {fileID: 0}
 --- !u!114 &8196065588308919841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5480006455011027714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8329061a261d0304aaad29307a1127b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ForceInitialControlScheme
+  playerInput: {fileID: 5970685766108223809}
+--- !u!114 &2198766030053557725
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
