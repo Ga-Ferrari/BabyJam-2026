@@ -18016,7 +18016,7 @@ PrefabInstance:
       objectReference: {fileID: 1733743121}
     - target: {fileID: 1863597851938530970, guid: 7530040e1eb7bad4db8834a72349fa20, type: 3}
       propertyPath: nextScene
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1863597851938530970, guid: 7530040e1eb7bad4db8834a72349fa20, type: 3}
       propertyPath: BarraPassos
