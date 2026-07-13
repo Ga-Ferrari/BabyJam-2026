@@ -363,7 +363,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2532517723336272035, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}
       propertyPath: m_text
-      value: VOCE VENCEU O MINEIRO NOOB HAHAHAHHAHAHAH
+      value: "Voc\xEA protegeu a natureza, por ora...\nParab\xE9ns"
+      objectReference: {fileID: 0}
+    - target: {fileID: 2532517723336272035, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}
+      propertyPath: m_margin.w
+      value: -276.09814
+      objectReference: {fileID: 0}
+    - target: {fileID: 2532517723336272035, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: e6ce41fc915cd6e4d85859c464637352, type: 2}
+    - target: {fileID: 2532517723336272035, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 649539947344793952, guid: e6ce41fc915cd6e4d85859c464637352, type: 2}
+    - target: {fileID: 2532517723336272035, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3021123240097094152, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -458,12 +474,28 @@ PrefabInstance:
       value: UiTelaDeMorte
       objectReference: {fileID: 0}
     - target: {fileID: 5386222771865677137, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}
+      propertyPath: m_Pivot.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5386222771865677137, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5386222771865677137, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5386222771865677137, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}
       propertyPath: m_SizeDelta.x
       value: 1440
       objectReference: {fileID: 0}
     - target: {fileID: 5386222771865677137, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.0029869
+      value: -0.0000038226135
+      objectReference: {fileID: 0}
+    - target: {fileID: 5386222771865677137, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5538056194469971837, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}
       propertyPath: m_Camera

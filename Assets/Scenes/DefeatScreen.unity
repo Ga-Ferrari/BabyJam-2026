@@ -304,8 +304,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45ee434a2c14b5544bc369fab97f266e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  tryAgainSceneName: cenaTeste1
-  mainMenuSceneName: sc_MainMenu
+  mainMenuSceneName: 0
 --- !u!114 &1751057750
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -358,6 +357,42 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2532517723336272035, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}
+      propertyPath: m_text
+      value: "Voc\xEA falhou em proteger a natureza...\nTente novamente"
+      objectReference: {fileID: 0}
+    - target: {fileID: 2532517723336272035, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}
+      propertyPath: m_fontSize
+      value: 112.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 2532517723336272035, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}
+      propertyPath: m_margin.w
+      value: -267.67804
+      objectReference: {fileID: 0}
+    - target: {fileID: 2532517723336272035, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}
+      propertyPath: m_margin.x
+      value: 76.4328
+      objectReference: {fileID: 0}
+    - target: {fileID: 2532517723336272035, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}
+      propertyPath: m_margin.z
+      value: 79.303955
+      objectReference: {fileID: 0}
+    - target: {fileID: 2532517723336272035, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: e6ce41fc915cd6e4d85859c464637352, type: 2}
+    - target: {fileID: 2532517723336272035, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 112.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 2532517723336272035, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 649539947344793952, guid: e6ce41fc915cd6e4d85859c464637352, type: 2}
+    - target: {fileID: 2532517723336272035, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3021123240097094152, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -449,6 +484,26 @@ PrefabInstance:
     - target: {fileID: 4479571372745619594, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}
       propertyPath: m_Name
       value: UiTelaDeMorte
+      objectReference: {fileID: 0}
+    - target: {fileID: 5386222771865677137, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}
+      propertyPath: m_Pivot.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5386222771865677137, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5386222771865677137, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5386222771865677137, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5386222771865677137, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5538056194469971837, guid: ae8e50b2fc45c7e4f874f794b80eedc1, type: 3}
       propertyPath: m_Camera
