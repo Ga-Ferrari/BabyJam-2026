@@ -15,9 +15,9 @@ MonoBehaviour:
   sizeMultiplier: 1.05
   selectDuration: 0.2
   selectEase: 6
-  selectSFX: {fileID: 0}
+  selectSFX: {fileID: 8300000, guid: 08dc8c5625f91bb46a23cb777309e1a2, type: 3}
   shakeStrength: 10
   vibrato: 20
   pressDuration: 0.1
   randomness: 90
-  pressSFX: {fileID: 0}
+  pressSFX: {fileID: 8300000, guid: 08dc8c5625f91bb46a23cb777309e1a2, type: 3}

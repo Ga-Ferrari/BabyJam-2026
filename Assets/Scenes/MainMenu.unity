@@ -242,7 +242,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &728796247
 RectTransform:
   m_ObjectHideFlags: 0
@@ -458,7 +458,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &831692101
 RectTransform:
   m_ObjectHideFlags: 0
@@ -714,7 +714,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 2
+  m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -771,7 +771,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b467de2512ed62943b6b18ff3eb5d3d3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f0deb7f557a9cf641a2cbc618317731f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -999,7 +999,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 2
+  m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -1056,7 +1056,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b467de2512ed62943b6b18ff3eb5d3d3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a4a3b53c4427fcf4e899bff32bf4c9f4, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1258,10 +1258,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1790558174119223185, guid: fa9a4bcf222adbc4f905564915c212c3, type: 3}
-      propertyPath: m_Resource
-      value: 
-      objectReference: {fileID: 8300000, guid: d707720f9c1c40743bb27cc6839a9e02, type: 3}
     - target: {fileID: 3240739074523183652, guid: fa9a4bcf222adbc4f905564915c212c3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.78099
@@ -1303,9 +1299,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3241404190610656087, guid: fa9a4bcf222adbc4f905564915c212c3, type: 3}
-      propertyPath: 'audios.Array.data[1]'
+      propertyPath: stepSFX
       value: 
-      objectReference: {fileID: 8300000, guid: d707720f9c1c40743bb27cc6839a9e02, type: 3}
+      objectReference: {fileID: 8300000, guid: 2cb4a4518f4941542b2ac9609cfa1edd, type: 3}
+    - target: {fileID: 3241404190610656087, guid: fa9a4bcf222adbc4f905564915c212c3, type: 3}
+      propertyPath: audios.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3241404190610656087, guid: fa9a4bcf222adbc4f905564915c212c3, type: 3}
+      propertyPath: 'audios.Array.data[5]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 4b3925be354a7d44eb86e60b4ebb2961, type: 3}
     - target: {fileID: 6884361380733469539, guid: fa9a4bcf222adbc4f905564915c212c3, type: 3}
       propertyPath: m_Name
       value: ===AudioManager===
@@ -1323,6 +1327,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3658027461324225902, guid: 33986fa27117f8346be3610d61e387b1, type: 3}
+      propertyPath: musicaMenu
+      value: 
+      objectReference: {fileID: 8300000, guid: 207cc377679d8334c9e6d9b2ed3222c3, type: 3}
+    - target: {fileID: 3658027461324225902, guid: 33986fa27117f8346be3610d61e387b1, type: 3}
+      propertyPath: musicaIngame
+      value: 
+      objectReference: {fileID: 8300000, guid: 111592bc83a774c4c8e1a935cde2f4c0, type: 3}
+    - target: {fileID: 3658027461324225902, guid: 33986fa27117f8346be3610d61e387b1, type: 3}
+      propertyPath: musicaDerrota
+      value: 
+      objectReference: {fileID: 8300000, guid: d707720f9c1c40743bb27cc6839a9e02, type: 3}
     - target: {fileID: 5046155493165071564, guid: 33986fa27117f8346be3610d61e387b1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 8.66403
@@ -1373,7 +1389,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7815347728628395648, guid: 33986fa27117f8346be3610d61e387b1, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

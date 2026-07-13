@@ -177,7 +177,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
   audios:
   - {fileID: 8300000, guid: 481cfc469f7f69a44913f12501aef10c, type: 3}
-  - {fileID: 8300000, guid: 643bd477637645844ad8841f9f4ad5e5, type: 3}
+  - {fileID: 8300000, guid: d707720f9c1c40743bb27cc6839a9e02, type: 3}
+  - {fileID: 8300000, guid: 08dc8c5625f91bb46a23cb777309e1a2, type: 3}
+  - {fileID: 8300000, guid: 111592bc83a774c4c8e1a935cde2f4c0, type: 3}
+  - {fileID: 8300000, guid: 4b3925be354a7d44eb86e60b4ebb2961, type: 3}
+  stepSFX: {fileID: 0}
   music: {fileID: 1790558174119223185}
   sfx: {fileID: 8589294127764773256}
 --- !u!1 &7892945655207925838
@@ -223,7 +227,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24300002, guid: 94fba76bbbeb134429ce0f6c876e3576, type: 2}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 643bd477637645844ad8841f9f4ad5e5, type: 3}
+  m_Resource: {fileID: 8300000, guid: d707720f9c1c40743bb27cc6839a9e02, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.05
   m_Pitch: 1

@@ -15,7 +15,7 @@ public class AudioManager : MonoBehaviour
 
     public Dictionary<Audios, AudioClip> GlobalAudio;
     public List<AudioClip> audios;
-
+    [SerializeField] private AudioClip stepSFX;
     public static AudioManager Instance { get; private set; }
 
     [SerializeField] private AudioSource music;
@@ -46,10 +46,15 @@ public class AudioManager : MonoBehaviour
 
     public void PlayMusic(AudioClip clip)
     {
-        if (music.clip == clip && music.isPlaying)
+        if (music.clip == clip)
             return;
 
         music.clip = clip;
         music.Play();
+    }
+
+    public void PlayStep()
+    {
+        sfx.PlayOneShot(stepSFX);
     }
 }

@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dce452e9f893b444db4fbe0c78dc75d6, type: 3}
   m_Name: ButtonEffectsData
   m_EditorClassIdentifier: Assembly-CSharp::MenuSystem.ButtonEffectsData
-  sizeMultiplier: 1.05
+  sizeMultiplier: 1.1
   selectDuration: 0.2
   selectEase: 6
-  selectSFX: {fileID: 0}
+  selectSFX: {fileID: 8300000, guid: 08dc8c5625f91bb46a23cb777309e1a2, type: 3}
   shakeStrength: 10
   vibrato: 20
   pressDuration: 0.1
   randomness: 90
-  pressSFX: {fileID: 0}
+  pressSFX: {fileID: 8300000, guid: 08dc8c5625f91bb46a23cb777309e1a2, type: 3}

@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MenuSystem.SectionEffectsData
   activationDuration: 0.2
   activationEase: 27
+  openSFX: {fileID: 0}
   finalSizeMultiplier: 0
   deactivationDuration: 0.1
   deactivationEase: 1
+  closeSFX: {fileID: 8300000, guid: 08dc8c5625f91bb46a23cb777309e1a2, type: 3}

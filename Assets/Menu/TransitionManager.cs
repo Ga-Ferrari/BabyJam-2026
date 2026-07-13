@@ -26,6 +26,9 @@ namespace Assets.Core
         public string lastGameplayScene;
         private bool isTransitioning = false;
 
+        [SerializeField] private AudioClip musicaIngame;
+        [SerializeField] private AudioClip musicaMenu;
+        [SerializeField] private AudioClip musicaVitoria;
         private void Awake()
         {
             if (Instance == null)
@@ -55,7 +58,21 @@ namespace Assets.Core
 
             lastGameplayScene = SceneManager.GetActiveScene().name;
 
+            if (sceneName == SceneToTransition.Tutorial || sceneName == SceneToTransition.Level1 || sceneName == SceneToTransition.Level2)
+            {
+                AudioManager.Instance.PlayMusic(musicaIngame);
+            }
+            else if (sceneName == SceneToTransition.MainMenu || sceneName == SceneToTransition.DefeatScreen)
+            {
+                AudioManager.Instance.PlayMusic(musicaMenu);
+            }
+            else if (sceneName == SceneToTransition.DefeatScreen)
+            {
+                AudioManager.Instance.PlayMusic(musicaVitoria);
+            }
+
             StartCoroutine(TransitionRoutine(sceneName.ToString()));
+
         }
 
         public void ReloadLastGameplayScene()

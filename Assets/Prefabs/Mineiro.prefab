@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4717743318825341110}
   - component: {fileID: 5363537239312830441}
   - component: {fileID: 378262969250326151}
+  - component: {fileID: 3684824193682251446}
   m_Layer: 0
   m_Name: Mineiro
   m_TagString: Untagged
@@ -126,6 +127,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   sistemaDeConstrucao: {fileID: 0}
+  funcoesCena: {fileID: 0}
+  TempoLevel: {fileID: 0}
 --- !u!95 &378262969250326151
 Animator:
   serializedVersion: 7
@@ -148,3 +151,15 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3684824193682251446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2089102746626836981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1a8bb377a79aae4db85719b1c9f3398, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MineiroStepSound
