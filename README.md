@@ -1,8 +1,8 @@
-# 🌟 [Nome do Seu Jogo]
+# 🌟 [Protetora da Terra]
 
 *Um puzzle desafiador inspirado na lenda da Mãe do Ouro.*
 
-[![Jogue agora no Itch.io](https://img.shields.io/badge/Jogue_no-itch.io-FA5C5C?style=for-the-badge&logo=itch.io)](SEU_LINK_DO_ITCH_IO_AQUI)
+[![Jogue agora no Itch.io](https://img.shields.io/badge/Jogue_no-itch.io-FA5C5C?style=for-the-badge&logo=itch.io)](https://neptune-delmare.itch.io/protetora-da-terra)
 
 ---
 
@@ -13,12 +13,7 @@
 - **Status:** Finalizado 
 
 ## 🎮 Sobre o Jogo
-[Escreva um parágrafo curto, de 2 a 3 linhas, explicando o objetivo do seu jogo e como a lenda da Mãe do Ouro se conecta com a resolução dos puzzles.]
-
-### ✨ Destaques
-* [Ex: Puzzles baseados em reflexão de luz]
-* [Ex: Arte original em pixel art]
-* Trilha sonora imersiva
+Nesse jogo o seu objetivo é impedir que o minerador consiga alcançar o ouro do labirinto antes do tempo acabar, para isso você poderá posicionar vários obstáculos no início do nível para atrapalhar o minerador, desviar o seu caminho, o distrair ou todos ao mesmo tempo!
 
 ## 📸 Screenshots e Gameplay
 *(Dica: Substitua o link abaixo pela URL de um GIF ou imagem do seu jogo para chamar mais atenção na página inicial do repositório)*
@@ -42,3 +37,8 @@
 * **[Seu Nome]** - Programação e Level Design ([@SeuUser](https://github.com/SeuUser))
 * **[Nome do Integrante 2]** - Arte 2D ([@UserDele](https://github.com/UserDele))
 * **[Nome do Integrante 3]** - Trilha Sonora
+
+## DEV-U - UNIFEI
+<p align="center">
+  <img src="https://proex.unifei.edu.br/extensao-tecnologica-e-empresarial/competicao-tecnologica/dev-u/">
+</p>
